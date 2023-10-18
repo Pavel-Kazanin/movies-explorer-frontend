@@ -4,7 +4,7 @@ import Navigation from "../Navigation/Navigation";
 
 function Header() {
 
-  const loggedIn = true;
+  const loggedIn = false;
   const link = useLocation();
 
   return (
