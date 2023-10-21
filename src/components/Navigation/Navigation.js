@@ -1,21 +1,26 @@
 import { Link, useLocation } from 'react-router-dom';
 
-function Navigation() {
+function Navigation({ isBurgerOpen, closeBurger }) {
   const link = useLocation();
+  //const windowInnerWidth = window.innerWidth;  
 
-  return (
-    <nav className="navigation">
-      <div className="navigation__movies">
-        <Link className={`navigation__element ${link.pathname === "/" && 'navigation__element_content'} ${link.pathname === "/movies" && 'navigation__element_active'}`} to="movies">Фильмы</Link>
-        <Link className={`navigation__element ${link.pathname === "/" && 'navigation__element_content'} ${link.pathname === "/saved-movies" && 'navigation__element_active'}`} to="saved-movies">Сохраненные фильмы</Link>
-      </div>
-      <Link to="profile" className="navigation__profile navigation__element profile">
-        <div className={`profile__button button ${link.pathname === "/" && 'profile__button_content'}`}>
-          <span className="button__text">Аккаунт</span>
-          <div className="button__icon"></div>
+  return (    
+    <div className={`navigation-container ${isBurgerOpen && 'navigation-container_opened'}`}>
+      <nav className={`navigation ${isBurgerOpen && 'navigation-burger'}`}>
+        <button className="navigation-burger__close-button" onClick={closeBurger}></button>
+        <Link className={`navigation__element ${link.pathname === "/" && 'navigation__element_active'} element-main`} to="/">Главная</Link>
+        <div className="navigation__movies">
+          <Link className={`navigation__element ${link.pathname === "/" && 'navigation__element_main'} ${link.pathname === "/movies" && 'navigation__element_active'}`} to="movies">Фильмы</Link>
+          <Link className={`navigation__element ${link.pathname === "/" && 'navigation__element_main'} ${link.pathname === "/saved-movies" && 'navigation__element_active'}`} to="saved-movies">Сохраненные фильмы</Link>
         </div>
-      </Link>
-    </nav>
+        <Link to="profile" className="navigation__profile navigation__element profile">
+          <div className={`profile__button button ${link.pathname === "/" && 'profile__button_content'}`}>
+            <span className="button__text">Аккаунт</span>
+            <div className="button__icon"></div>
+          </div>
+        </Link>
+      </nav>
+    </div>
   )
 }
 
