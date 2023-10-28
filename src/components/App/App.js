@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import './App.css';
-import Header from "../Header/Header";
-import Main from "../Main/Main";
-import Footer from '../Footer/Footer';
+//import Header from "../Header/Header";
+//import Main from "../Main/Main";
+//import Footer from '../Footer/Footer';
+import Register from '../Register/Register';
 
 function App() {
 
@@ -14,9 +15,10 @@ function App() {
 
   return (
     <div className="App">
-      <Header isBurgerOpen={isBurgerOpen} toggleBurger={toggleBurger} />
+      {/*<Header isBurgerOpen={isBurgerOpen} toggleBurger={toggleBurger} />
       <Main />
-      <Footer />
+      <Footer />*/}
+      <Register />
     </div>
   );
 }
