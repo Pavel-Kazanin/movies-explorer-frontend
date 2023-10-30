@@ -2,9 +2,8 @@ import headerLogo from "../../images/logo.svg";
 import { Link, useLocation } from 'react-router-dom';
 import Navigation from "../Navigation/Navigation";
 
-function Header({ isBurgerOpen, toggleBurger }) {
-
-  const loggedIn = false;
+function Header({ isBurgerOpen, toggleBurger, loggedIn }) {
+  
   const link = useLocation();
 
   return (
