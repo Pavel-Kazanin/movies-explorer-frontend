@@ -1,0 +1,173 @@
+.search-container {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 70px 70px 47px 70px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-form {
+  display: flex; 
+  flex-direction: column; 
+  width: 100%;  
+}
+
+.global-search::after {
+  display: block;
+  content: '';
+  width: 100%;
+  height: 1px; 
+  background-color: #e8e8e8;  
+  margin-top: 13px;
+  margin-bottom: 32px; 
+}
+
+.global-search__text {
+  max-width: calc(100% - 80px);
+  width: 100%;
+  border: 0;
+  vertical-align: bottom;
+  outline: none;
+  padding: 0;
+  font-family: Inter;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.global-search__text::placeholder {
+  color: #a0a0a0;
+}
+
+.global-search__submit-button {
+  display: inline;
+  width: 59px;
+  height: 34px;
+  border: 0;
+  border-radius: 48px;
+  padding: 0;
+  background: #3456F3;
+  color: #fff;
+  font-family: Inter;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;  
+  margin-left: 21px;
+  cursor: pointer;
+}
+
+.global-search__submit-button:hover {
+  opacity: 0.8;
+}
+
+.search-form__short-filter {
+  display: flex;    
+}
+
+.short-filter__label {
+  display: flex;  
+  font-family: Inter;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.short-filter__checkbox {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.short-filter__checkbox+.short-filter__label {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+  gap: 14px;
+  cursor: pointer;
+}
+
+.short-filter__checkbox+.short-filter__label::before {
+  content: ' ';
+  display: inline-block;
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: 36px;
+  height: 20px;
+  transition: background 1s ease;
+  background-image: url(../../images/smalltumboff.svg);  
+  background-repeat: no-repeat;
+  background-position: center;   
+}
+
+.short-filter__checkbox:checked+.short-filter__label::before {
+  transition: background 1.5s ease;
+  background-image: url(../../images/smalltumb.svg);
+}
+
+@media screen and (max-width: 768px) {
+  .search-container {
+    padding: 80px 30px 61px 30px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .search-form__short-filter {    
+    justify-content: flex-end;    
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .short-filter__label {    
+    flex-direction: row-reverse;    
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .global-search::after {    
+    margin-bottom: 30px;    
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .short-filter__checkbox+.short-filter__label {    
+    gap: 16px;    
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .search-container {
+    padding: 84px 14px 51px 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .search-form__short-filter {    
+    justify-content: center;    
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .global-search::after {  
+    margin-top: 9px;  
+    margin-bottom: 41px;    
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .global-search__text {  
+    font-size: 18px;  
+    vertical-align: middle;  
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .short-filter__label {  
+    font-size: 11px;       
+  }
+}
+
+

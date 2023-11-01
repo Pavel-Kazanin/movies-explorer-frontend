@@ -1,10 +1,15 @@
-.auth-profile {
-  padding-top: 34px;
+.auth-profile {  
   max-width: 410px;
+  margin-top: 74px;    
+}
+
+.form-auth-profile {
+  min-height: 464px;
 }
 
 .auth-profile__title {
   text-align: center;
+  margin-top: 0;
   margin-bottom: 123px;
 }
 
@@ -86,4 +91,52 @@
   font-weight: 500;  
   height: 14px;
   margin: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .auth-profile {   
+    margin-top: 230px;    
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .form-auth-profile {   
+    min-height: 429px;   
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .auth-profile__title {    
+    margin-bottom: 96px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .auth-profile {
+    margin: 64px 0 40px 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .form-auth-profile {   
+    min-height: 581px;   
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .auth-profile__title {    
+    margin-bottom: 80px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .auth-profile__signout-button {    
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .auth-profile__submit-button {    
+    font-size: 12px;
+  }
 }

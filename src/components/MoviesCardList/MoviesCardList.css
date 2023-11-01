@@ -1,0 +1,20 @@
+.movies__cards {  
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;  
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 38px 20px;
+  list-style-type: none;
+  justify-content: center;  
+  box-sizing: border-box;  
+  padding: 70px 70px 89px 70px;  
+}
+
+@media screen and (max-width: 768px) {
+  .movies__cards {
+    grid-template-columns: repeat(auto-fill, 339px);   
+    padding: 70px 30px 80px 30px; 
+    gap: 30px 30px;    
+  }
+}
