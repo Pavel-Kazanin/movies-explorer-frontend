@@ -1,23 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import cardLink from "../../images/movies/33 слова о дизайне.jpg";
 
-function MoviesCard() {
+function MoviesCard({card, selector}) {
 
   const [isSaved, setSaved] = useState(false);
+
+  useEffect(() => {
+    if (card.saved) {
+      setSaved(true);
+    } else {
+      setSaved(false);
+    }
+  }, [])
 
   function toggleLike() {
     setSaved(!isSaved);
   }
 
   return (
-    <li className="movies__card card">
+    <li className={`movies__card card ${selector}`}>
       <img className="card__image" alt="33 слова о дизайне" src={cardLink} />
       <div className="card__description">
-        <h2 className="card__title">33 слова о дизайне 33 слова о дизайне</h2>
-        <button className={`card__like ${isSaved && 'card__like_active'}`} name="card-like" type="button" value="add-like" onClick={toggleLike}></button>
+        <h2 className="card__title">{card.name}</h2>
+        <button className={`${selector}__like ${isSaved && 'card__like_active'}`} name="card-like" type="button" value="add-like" onClick={toggleLike}></button>
       </div>
       <div className="card__separator"></div>
-      <p className="card__duration">1ч 42м</p>
+      <p className="card__duration">{card.duration}</p>
     </li>
   )
 }

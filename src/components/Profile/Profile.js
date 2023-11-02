@@ -1,15 +1,15 @@
-import {useState} from 'react';
 import AuthForm from "../AuthForm/AuthForm";
 import useFormAndValidation from '../../hooks/useFormAndValidation';
 
 
-function Profile({ isEdit, allowEdit, currentUser, onUpdateUser, loggedIn }) {  
+function Profile({ isEdit, allowEdit, currentUser, onUpdateUser, loggedIn, logOut }) {  
 
-  const {values, handleChange, errors, isValid } = useFormAndValidation();
-  const [isDisableButton, setDisableButton]= useState(false);
-    
+  const {values, handleChange, errors, isValid, setIsValid } = useFormAndValidation();
+      
   function handleSubmit(e) {    
-    e.preventDefault();    
+    e.preventDefault(); 
+    
+    setIsValid(false);
   
     onUpdateUser({
       name: values.name,      
@@ -19,7 +19,7 @@ function Profile({ isEdit, allowEdit, currentUser, onUpdateUser, loggedIn }) {
 
   return (
     <div className="auth auth-profile">
-      <AuthForm title="Привет, Виталий!" buttonText="Сохранить" page="auth-profile" isEdit={isEdit} allowEdit={allowEdit} handleSubmit={handleSubmit} loggedIn={loggedIn} isDisableButton={isDisableButton} isValid={isValid} setDisableButton={setDisableButton}>
+      <AuthForm title="Привет, Виталий!" buttonText="Сохранить" page="auth-profile" isEdit={isEdit} allowEdit={allowEdit} handleSubmit={handleSubmit} loggedIn={loggedIn} isValid={isValid}>
         <div className="inputs-block">
           <label className="form-auth__label auth-profile__label" htmlFor="name-input">Имя</label>
           <input id="name-input" className="form-auth__text form-auth__text_value_name auth-profile__text" defaultValue={currentUser.name ?? ''} type="text" name="name" minLength="2" maxLength="30" onChange={handleChange} required disabled={!isEdit} />
@@ -32,7 +32,7 @@ function Profile({ isEdit, allowEdit, currentUser, onUpdateUser, loggedIn }) {
         <span className="email-input-error form-auth__text-error">{errors.email}</span>
       </AuthForm>
       {!isEdit &&
-      <button className="auth-profile__signout-button">Выйти из аккаунта</button>
+      <button className="auth-profile__signout-button"type="button" onClick={logOut}>Выйти из аккаунта</button>
       }
     </div>
   )

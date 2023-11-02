@@ -3,7 +3,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import cardLink from "../../images/movies/33 слова о дизайне.jpg";
 
-function Movies({width}) {
+function SavedMovies({width}) {
 
   const initialCards = [
     {
@@ -183,6 +183,8 @@ function Movies({width}) {
     }
   ];
 
+  const savedCards = initialCards.filter((item) => item.saved === true);  
+
   const [items, setItems] = useState([]);
   const [visibleItems, setVisibleItems] = useState();
   const [visibleButton, setVisibleButton] = useState(true);
@@ -198,7 +200,7 @@ function Movies({width}) {
   }, [width])
 
   useEffect(() => {
-    setItems(initialCards);      
+    setItems(savedCards);       
     if (items.length > 0 && items.length <= visibleItems) {
       setVisibleButton(false);
     };  
@@ -209,9 +211,9 @@ function Movies({width}) {
   }  
   
   return (
-    <section className="movies">
+    <section className="movies saved-movies">
       <SearchForm />
-      <MoviesCardList selector="card" visibleItems={visibleItems} items={items} />
+      <MoviesCardList selector="saved-card" visibleItems={visibleItems} items={items} />
       <div className={`show-more ${!visibleButton && "show-more_hidden"}`}>
         <button className="show-more__button" type="buttuon" onClick={showMore}>Еще</button>
       </div>
@@ -219,4 +221,4 @@ function Movies({width}) {
   )
 }
 
-export default Movies;
+export default SavedMovies;

@@ -2,7 +2,8 @@ import headerLogo from "../../images/logo.svg";
 import { Link, useLocation } from 'react-router-dom';
 import Navigation from "../Navigation/Navigation";
 
-function Header({ isBurgerOpen, toggleBurger, loggedIn }) {
+
+function Header({ isBurgerOpen, openBurger, closeBurger, loggedIn }) {
   
   const link = useLocation();
 
@@ -11,8 +12,8 @@ function Header({ isBurgerOpen, toggleBurger, loggedIn }) {
       <Link className="header__logo" to="/"><img className="header__logo-image" alt="Логотип" src={headerLogo} /></Link>
       {loggedIn ?
         <>
-          <Navigation isBurgerOpen={isBurgerOpen} closeBurger={toggleBurger} />
-          <button className={`header__burger-menu-button ${link.pathname === "/" && 'header__burger-menu-button_white'}`} type="button" onClick={toggleBurger}></button>
+          <Navigation isBurgerOpen={isBurgerOpen} closeBurger={closeBurger} />
+          <button className={`header__burger-menu-button ${link.pathname === "/" && 'header__burger-menu-button_white'}`} type="button" onClick={openBurger}></button>
         </>
         :
         <nav className="header__user-unauthorized">

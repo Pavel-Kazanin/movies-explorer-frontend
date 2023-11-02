@@ -8,13 +8,21 @@
   list-style-type: none;
   justify-content: center;  
   box-sizing: border-box;  
-  padding: 70px 70px 89px 70px;  
+  padding: 70px 70px 10px 70px;  
 }
 
 @media screen and (max-width: 768px) {
   .movies__cards {
-    grid-template-columns: repeat(auto-fill, 339px);   
-    padding: 70px 30px 80px 30px; 
+    grid-template-columns: repeat(auto-fill, minmax(300px, fr));
+    padding: 69px 30px 10px 30px; 
     gap: 30px 30px;    
   }
 }
+
+@media screen and (max-width: 480px) {
+  .movies__cards {    
+    padding: 39px 10px 50px 10px; 
+    gap: 34px;    
+  }
+}
+

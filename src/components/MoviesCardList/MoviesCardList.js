@@ -1,20 +1,13 @@
 import MoviesCard from "../MoviesCard/MoviesCard";
 
-function MoviesCardList() {
-
+function MoviesCardList({ visibleItems, items, selector }) {
 
   return (
     <ul className="movies__cards">
-      <MoviesCard />
-      <MoviesCard />
-      <MoviesCard />
-      <MoviesCard />
-      <MoviesCard />
-      <MoviesCard />
-      <MoviesCard />
-      <MoviesCard />
-      <MoviesCard />
-    </ul>  
+      {
+        items.slice(0, visibleItems).map((card) => <MoviesCard key={card.id} card={card} selector={selector} />)
+      }
+    </ul>
   )
 }
 

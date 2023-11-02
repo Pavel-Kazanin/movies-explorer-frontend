@@ -4,6 +4,8 @@ html {
 
 body {
   height: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 #root {
@@ -30,3 +32,4 @@ body {
 @import url(./components/Movies/Movies.css);
 @import url(./components/MoviesCardList/MoviesCardList.css);
 @import url(./components/MoviesCard/MoviesCard.css);
+@import url(./components/SavedMovies/SavedMovies.css);

@@ -29,17 +29,19 @@
   margin-bottom: 184px;
 }
 
-.not-found__back {
+.not-found__go-back {
+  border: 0;
+  background-color: #fff;
   color: #3456F3;  
   font-family: Inter;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;  
-  text-decoration: none;  
+  line-height: normal;
+  cursor: pointer;    
 }
 
-.not-found__back:hover {
+.not-found__go-back:hover {
   opacity: 0.7; 
 }
 
@@ -50,7 +52,7 @@
 }
 
 @media screen and (max-width: 768px) {
-  .not-found__back {
+  .not-found__go-back {
     margin-bottom: 222px;
   }
 }
@@ -71,7 +73,7 @@
 }
 
 @media screen and (max-width: 480px) {
-  .not-found__back {
+  .not-found__go-back {
     font-size: 12px;
     margin-bottom: 30px;
   }
