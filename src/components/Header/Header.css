@@ -1,0 +1,141 @@
+.header {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: min-content;
+  align-items: center;
+  background-color: #fff;
+  justify-content: space-between;
+  box-sizing: border-box;
+  max-width: 1280px;
+  height: 74px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 15px 70px 15px 70px;
+}
+
+.header-main {
+  background-color: #073042;
+}
+
+.header__logo {
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+}
+
+.header__burger-menu-button {
+  display: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  margin-left: auto;
+  background-image: url(../../images/burger-menu-icon-white.svg);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.header__burger-menu-button_white {
+  background-image: url(../../images/burger-menu-icon.svg);
+}
+
+.header__burger-menu-button:hover {
+  opacity: 0.7;
+}
+
+.header__user-unauthorized {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  margin-left: auto;
+  flex-direction: row;
+  align-items: center;  
+}
+
+.header__signup {
+  color: #fff;
+  margin: 0;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.header__signup:hover {
+  opacity: 0.7;
+}
+
+.header__signin {
+  margin-left: 30px;
+}
+
+.header__signin:hover {
+  opacity: 0.8;
+}
+
+.header__signin-button {
+  width: 76px;
+  height: 32px;
+  background-color: #2BE080;
+  border: 0;
+  border-radius: 3px;
+  color: #000;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 960px) {
+  .header {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .header__burger-menu-button {
+    display: block;   
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .header__burger-menu-button {
+    background-size: 40px 44px;
+    background-position: center;
+    width: 40px;      
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .header {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .header__signup {
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .header__signin {
+    margin-left: 14px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .header__signin-button {
+    width: 54px;
+    height: 26px;
+    font-size: 10px;
+  }
+}

@@ -1,0 +1,142 @@
+.auth-profile {  
+  max-width: 410px;
+  margin-top: 74px;    
+}
+
+.form-auth-profile {
+  min-height: 464px;
+}
+
+.auth-profile__title {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 123px;
+}
+
+.auth-profile__submit-button {
+  text-align: center;
+  font-family: Inter;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background-color: #fff;
+  border: 0;
+  padding: 0;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.auth-profile__submit-button:hover {
+  opacity: 0.8;
+}
+
+.auth-profile__signout-button {
+  background-color: #fff;
+  border: 0;
+  color: #FF3055;
+  font-family: Inter;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.auth-profile__signout-button:hover {
+  opacity: 0.8;
+}
+
+.inputs-block {
+  display: flex;  
+  justify-content: space-between;
+  flex-wrap: wrap;  
+}
+
+.inputs-block::after {
+  display: block;
+  content: '';
+  width: 100%;
+  height: 1px; 
+  background-color: #e8e8e8; 
+  margin-top: 17px;  
+}
+
+.inputs-block:last-of-type::after {
+  display: none;
+}
+
+.auth-profile__text {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 200px;
+  height: 14px;
+  text-align: right;
+  font-size: 11px;
+}
+
+.auth-profile__text:focus {
+  border: 0;
+}
+
+.auth-profile__text:disabled {
+  background-color: #fff;
+  color: #000;
+}
+
+.auth-profile__label {
+  color: #000;  
+  font-size: 11px;  
+  font-weight: 500;  
+  height: 14px;
+  margin: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .auth-profile {   
+    margin-top: 236px;    
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .form-auth-profile {   
+    min-height: 429px;   
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .auth-profile__title {    
+    margin-bottom: 96px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .auth-profile {
+    margin: 70px 0 40px 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .form-auth-profile {   
+    min-height: 581px;   
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .auth-profile__title {    
+    margin-bottom: 80px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .auth-profile__signout-button {    
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .auth-profile__submit-button {    
+    font-size: 12px;
+  }
+}

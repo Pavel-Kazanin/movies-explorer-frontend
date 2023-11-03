@@ -1,0 +1,226 @@
+.navigation {
+  display: grid;  
+  grid-template-columns: 1fr 1fr;  
+  align-items: center; 
+}
+
+.navigation-burger {  
+  display: flex;
+  flex-direction: column;  
+  background-color: #fff;
+  width: 520px;
+  height: 100vh;
+}
+
+.navigation-burger__close-button {
+  display: none;
+  width: 33px;
+  height: 33px;
+  border: 0;
+  padding: 0;
+  margin: 22px 22px 105px auto;
+  background-image: url(../../images/burger-close-button.svg);
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.navigation-burger__close-button:hover {
+  opacity: 0.7;
+}
+
+.navigation__movies {
+  justify-self: center;  
+}
+
+.navigation__element {  
+  color: #000;
+  font-family: Inter;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.navigation__element_main {
+  color: #fff;
+}
+
+.element-main {
+  display: none;
+}
+
+.navigation__element_active {
+  font-weight: 500;
+}
+
+.navigation__element:first-child {
+  margin-right: 16px;
+}
+
+.navigation__profile {  
+  text-decoration: none;
+  margin-left: auto;
+}
+
+.navigation__element:hover {
+  opacity: 0.7;
+}
+
+.profile__button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;  
+  gap: 7px;
+  width: 100px;
+  height: 32px;
+  box-sizing: border-box;
+  padding: 0 3px 0 11px;
+  margin: 0;  
+  background-color: #fff;
+  border: 0;
+  border-radius: 40px;
+  box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.08);
+}
+
+.profile__button_content {
+  background-color: #2BE080;
+}
+
+.button__icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50px;
+  background-color: #f9f9f9;
+  background-image: url(../../images/profile-icon.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.button__text {
+  color: #000;
+  font-family: Inter;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 12px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation-container {
+    display: flex;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    justify-content: flex-end;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);    
+    visibility: hidden;
+    opacity: 0;    
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navigation-container_opened {
+    visibility: visible;
+    opacity: 1; 
+    transition: visibility 1s, opacity 1s;      
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navigation {
+    display: none;   
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navigation-burger {    
+    display: flex;
+             
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navigation-burger__close-button {
+    display: block;    
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .element-main {
+    display: inline;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__element {
+    color:#000;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 28px;
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__element_active {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__element:first-child {    
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__movies {
+    display: flex;
+    flex-direction: column;    
+    text-align: center;
+    flex: 1 1 auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__profile {
+    margin: 0 0 90px 0;    
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .profile__button_content {
+    background-color: #fff;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navigation-burger__close-button {
+    margin: 13px 13px 100px auto;    
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navigation__element {
+    margin-bottom: 24px;   
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navigation__element_active {
+    text-underline-offset: 10px;   
+  }
+}
+

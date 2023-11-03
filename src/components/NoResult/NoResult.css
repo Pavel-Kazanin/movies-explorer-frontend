@@ -1,0 +1,32 @@
+.no-result {
+  max-width: 1280px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 70px 70px 47px 70px;
+  height: calc(100vh - 463px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-result__text {  
+  margin: 0;
+  color: #a0a0a0;
+  font-family: Inter;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+@media screen and (max-width: 768px) {
+  .no-result__text {
+    font-size: 34px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .no-result__text {
+    font-size: 14px;
+  }
+}
