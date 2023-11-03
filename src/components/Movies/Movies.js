@@ -24,7 +24,7 @@ function Movies({width}) {
       name: 'В погоне за Бенкси',
       link: cardLink,
       duration: '1ч 42м',
-      saved: true,
+      saved: false,
       id: 3
     },
     {
@@ -52,14 +52,14 @@ function Movies({width}) {
       name: 'Когда я думаю о Германии ночью',
       link: cardLink,
       duration: '1ч 42м',
-      saved: true,
+      saved: false,
       id: 7
     },
     {
       name: 'Gimme Danger: История Игги и The Stooges',
       link: cardLink,
       duration: '1ч 42м',
-      saved: true,
+      saved: false,
       id: 8
     },
     {
@@ -193,7 +193,7 @@ function Movies({width}) {
     } else if (width < 1280 && width >= 768) {
       setVisibleItems(8);
     } else if (width < 768) {
-      setVisibleItems(4);
+      setVisibleItems(5);
     }
   }, [width])
 
@@ -214,7 +214,7 @@ function Movies({width}) {
       <MoviesCardList selector="card" visibleItems={visibleItems} items={items} />
       <div className={`show-more ${!visibleButton && "show-more_hidden"}`}>
         <button className="show-more__button" type="buttuon" onClick={showMore}>Еще</button>
-      </div>
+      </div>      
     </section>  
   )
 }

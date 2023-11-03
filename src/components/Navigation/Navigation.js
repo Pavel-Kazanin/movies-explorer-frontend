@@ -10,7 +10,7 @@ function Navigation({ isBurgerOpen, closeBurger }) {
         <Link className={`navigation__element ${link.pathname === "/" && 'navigation__element_active'} element-main`} to="/" onClick={closeBurger}>Главная</Link>
         <div className="navigation__movies">
           <Link className={`navigation__element ${link.pathname === "/" && 'navigation__element_main'} ${link.pathname === "/movies" && 'navigation__element_active'}`} to="movies" onClick={closeBurger}>Фильмы</Link>
-          <Link className={`navigation__element ${link.pathname === "/" && 'navigation__element_main'} ${link.pathname === "/saved-movies" && 'navigation__element_active'}`} to="saved-movies" onClick={closeBurger}>Сохраненные фильмы</Link>
+          <Link className={`navigation__element ${link.pathname === "/" && 'navigation__element_main'} ${link.pathname === "/saved-movies" && 'navigation__element_active'}`} to="saved-movies" onClick={closeBurger}>Сохранённые фильмы</Link>
         </div>
         <Link to="profile" className="navigation__profile navigation__element profile" onClick={closeBurger}>
           <div className={`profile__button button ${link.pathname === "/" && 'profile__button_content'}`}>

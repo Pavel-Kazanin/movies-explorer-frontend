@@ -21,7 +21,7 @@
 
 @media screen and (max-width: 480px) {
   .movies__cards {    
-    padding: 39px 10px 50px 10px; 
+    padding: 39px 10px 10px 10px; 
     gap: 34px;    
   }
 }

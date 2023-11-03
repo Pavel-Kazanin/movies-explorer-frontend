@@ -1,5 +1,7 @@
 .movies {
-  width: 100%;  
+  width: 100%;
+  display: flex;
+  flex-direction: column;  
 }
 
 .show-more {
@@ -31,4 +33,12 @@
 
 .show-more_hidden {
   display: none;
+}
+
+@media screen and (max-width: 480px) {
+  .show-more {    
+    padding-left: 40px;
+    padding-right: 40px; 
+       
+  }
 }

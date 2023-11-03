@@ -9,7 +9,7 @@ function Register({loggedIn}) {
 
   return (
     <div className="auth">
-      <Link className="auth__logo" to="/"><img className="header__logo-image" alt="Логотип" src={headerLogo} /></Link>
+      <Link className="auth__logo" to="/"><img className="auth__logo-image" alt="Логотип" src={headerLogo} /></Link>
       <AuthForm title="Добро пожаловать!" buttonText="Зарегистрироваться" isValid={isValid}>
         <label className="form-auth__label" htmlFor="name-input">Имя</label>
         <input id="name-input" className="form-auth__text form-auth__text_value_name" defaultValue={values.name} type="text" name="name" minLength="2" maxLength="30" required onChange={handleChange} />
@@ -21,7 +21,7 @@ function Register({loggedIn}) {
         <input id="password-input" className="form-auth__text form-auth__text_value_password" defaultValue={values.password} type="password" name="password" required onChange={handleChange} />
         <span className="password-input-error form-auth__text-error">{errors.password}</span>
       </AuthForm>
-      <p className="form-auth__signin-text">Уже зарегистрированны? <Link to="/signin" className="form-auth__signin-link">Войти</Link></p>
+      <p className="auth__signin-text">Уже зарегистрированны? <Link to="/signin" className="auth__signin-link">Войти</Link></p>
     </div>
   )
 }

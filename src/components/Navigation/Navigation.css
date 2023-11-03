@@ -14,9 +14,10 @@
 
 .navigation-burger__close-button {
   display: none;
-  width: 22px;
-  height: 22px;
+  width: 33px;
+  height: 33px;
   border: 0;
+  padding: 0;
   margin: 22px 22px 105px auto;
   background-image: url(../../images/burger-close-button.svg);
   background-color: transparent;
@@ -174,7 +175,7 @@
   .navigation__element_active {
     text-decoration: underline;
     text-decoration-thickness: 2px;
-    text-underline-offset: 6px;
+    text-underline-offset: 8px;
   }
 }
 
@@ -202,6 +203,24 @@
 @media screen and (max-width: 768px) {
   .profile__button_content {
     background-color: #fff;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navigation-burger__close-button {
+    margin: 13px 13px 100px auto;    
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navigation__element {
+    margin-bottom: 24px;   
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navigation__element_active {
+    text-underline-offset: 10px;   
   }
 }
 

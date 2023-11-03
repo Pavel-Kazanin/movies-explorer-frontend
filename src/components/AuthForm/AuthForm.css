@@ -100,13 +100,14 @@
 .form-auth__submit-button_disable {
   background-color: #f8f8f8;
   cursor: auto;
+  color: #c2c2c2;
 }
 
 .form-auth__submit-button_disable:hover {
   opacity: 1;
 }
 
-.form-auth__signin-text {
+.auth__signin-text {
   color: #A0A0A0;
   text-align: center;  
   font-family: Inter;
@@ -117,12 +118,12 @@
   margin: 16px 0 0 0;
 }
 
-.form-auth__signin-link {
+.auth__signin-link {
   color: #3456F3;
   text-decoration: none;
 }
 
-.form-auth__signin-link:hover {
+.auth__signin-link:hover {
   opacity: 0.7;
 }
 
@@ -168,7 +169,7 @@
 }
 
 @media screen and (max-width: 480px) {
-  .form-auth__signin-text {    
+  .auth__signin-text {    
     font-size: 12px;  
   }
 }

@@ -38,7 +38,7 @@ function SavedMovies({width}) {
       name: 'Бег это свобода',
       link: cardLink,
       duration: '1ч 42м',
-      saved: true,
+      saved: false,
       id: 5
     },
     {
@@ -52,14 +52,14 @@ function SavedMovies({width}) {
       name: 'Когда я думаю о Германии ночью',
       link: cardLink,
       duration: '1ч 42м',
-      saved: true,
+      saved: false,
       id: 7
     },
     {
       name: 'Gimme Danger: История Игги и The Stooges',
       link: cardLink,
       duration: '1ч 42м',
-      saved: true,
+      saved: false,
       id: 8
     },
     {

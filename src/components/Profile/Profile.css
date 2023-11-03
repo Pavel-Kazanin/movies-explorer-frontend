@@ -95,7 +95,7 @@
 
 @media screen and (max-width: 768px) {
   .auth-profile {   
-    margin-top: 230px;    
+    margin-top: 236px;    
   }
 }
 
@@ -113,7 +113,7 @@
 
 @media screen and (max-width: 480px) {
   .auth-profile {
-    margin: 64px 0 40px 0;
+    margin: 70px 0 40px 0;
   }
 }
 
