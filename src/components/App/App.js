@@ -11,6 +11,7 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import NotFound from '../NotFound/NotFound';
+import mainApi from '../../utils/MainApi';
 
 function App() {
 
@@ -21,13 +22,66 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isBurgerOpen, setBurgerOpen] = useState(false);
   const [isEdit, setEditState] = useState(false);
-  const [currentUser, setCurrentUser] = useState({name: "Виталий", email: "pochta@yandex.ru"}); 
+  const [currentUser, setCurrentUser] = useState({}); 
 
   useEffect(() => {
     if (width > 768) {
       closeBurger();
     }
   }, [width]);
+
+  useEffect(() => {
+    handleTokenCheck();    
+  },[loggedIn]);
+
+  const handleTokenCheck = () => {
+    mainApi.checkToken()         
+    .then((data) => {                               
+      if(data) {  
+        setCurrentUser(data);           
+        setLoggedIn(true);
+        navigate('/', { replace: true });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })    
+}
+
+  function handleAuthSubmit(password, email) {
+    mainApi.authorizeUser(password, email)           
+      .then((data) => {               
+        if (data) {                  
+          setCurrentUser(data.data);       
+          setLoggedIn(true);          
+          navigate('/', { replace: true });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  } 
+
+  function handleSignOut() {
+    mainApi.signOut()    
+    .then(() => {
+      setLoggedIn(false);
+      navigate('/signin', { replace: true });
+    }) 
+    .catch((err) => {
+      console.log(err);
+    })   
+  }
+
+  function handleUpdateUser(info) {         
+    mainApi.setUserInfo(info.name, info.email).then((newUserInfo) => {      
+      setCurrentUser(newUserInfo);  
+      setEditState(false);    
+    })
+    .catch((err) => {
+      console.log(err);
+    })   
+  }
 
   function openBurger() {
     setBurgerOpen(true);
@@ -39,22 +93,8 @@ function App() {
 
   function allowEdit() {
     setEditState(true);
-  }
+  } 
 
-  function handleUpdateUser(userInfo) {    
-    setCurrentUser(userInfo);
-    setEditState(false);
-  }
-  
-  function logIn() {
-    setLoggedIn(true);
-    navigate('/movies', { replace: true });
-  }
-
-  function logOut() {
-    setLoggedIn(false);
-    navigate('/', { replace: true });
-  }
 
   return (
     <div className="App">
@@ -65,11 +105,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/signin" element={<Login loggedIn={loggedIn} logIn={logIn} />} />
+        <Route path="/signin" element={<Login onAuthSubmit={handleAuthSubmit} />} />
         <Route path="/signup" element={<Register />} /> 
         <Route path="/movies" element={<Movies width={width} />} /> 
         <Route path="/saved-movies" element={<SavedMovies width={width} />} /> 
-        <Route path="/profile" element={<Profile allowEdit={allowEdit} isEdit={isEdit} logOut={logOut} currentUser={currentUser} onUpdateUser={handleUpdateUser} loggedIn={loggedIn} />} />     
+        <Route path="/profile" element={<Profile allowEdit={allowEdit} isEdit={isEdit} onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} currentUser={currentUser} loggedIn={loggedIn} />} />     
       </Routes>
       {
         (link.pathname === "/" || link.pathname === "/movies" || link.pathname === "/saved-movies") &&

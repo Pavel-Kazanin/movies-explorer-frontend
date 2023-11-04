@@ -2,7 +2,7 @@ import AuthForm from "../AuthForm/AuthForm";
 import useFormAndValidation from '../../hooks/useFormAndValidation';
 
 
-function Profile({ isEdit, allowEdit, currentUser, onUpdateUser, loggedIn, logOut }) {  
+function Profile({ isEdit, allowEdit, currentUser, onUpdateUser, loggedIn, onSignOut }) {   
 
   const {values, handleChange, errors, isValid, setIsValid } = useFormAndValidation();
       
@@ -32,7 +32,7 @@ function Profile({ isEdit, allowEdit, currentUser, onUpdateUser, loggedIn, logOu
         <span className="email-input-error form-auth__text-error">{errors.email}</span>
       </AuthForm>
       {!isEdit &&
-      <button className="auth-profile__signout-button"type="button" onClick={logOut}>Выйти из аккаунта</button>
+      <button className="auth-profile__signout-button"type="button" onClick={onSignOut}>Выйти из аккаунта</button>
       }
     </div>
   )
