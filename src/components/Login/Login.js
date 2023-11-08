@@ -3,7 +3,7 @@ import AuthForm from "../AuthForm/AuthForm";
 import { Link } from 'react-router-dom';
 import useFormAndValidation from '../../hooks/useFormAndValidation';
 
-function Login({onAuthSubmit}) {  
+function Login({ onAuthSubmit, serverError }) {  
   
   const {values, handleChange, errors, isValid } = useFormAndValidation();
 
@@ -15,7 +15,7 @@ function Login({onAuthSubmit}) {
   return (
     <div className="auth">
       <Link className="auth__logo" to="/"><img className="auth__logo-image" alt="Логотип" src={headerLogo} /></Link>
-      <AuthForm title="Рады видеть!" buttonText="Войти" handleSubmit={handleSubmit} isValid={isValid}>        
+      <AuthForm title="Рады видеть!" buttonText="Войти" onSubmit={handleSubmit} isValid={isValid} serverError={serverError}>        
         <label className="form-auth__label" htmlFor="email-input">E-mail</label>
         <input id="email-input" className="form-auth__text form-auth__text_value_email" defaultValue={values.email} type="email" name="email" required onChange={handleChange} />
         <span className="email-input-error form-auth__text-error">{errors.email}</span>

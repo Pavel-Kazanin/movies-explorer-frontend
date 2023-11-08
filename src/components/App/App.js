@@ -12,6 +12,8 @@ import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import NotFound from '../NotFound/NotFound';
 import mainApi from '../../utils/MainApi';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 function App() {
 
@@ -19,9 +21,10 @@ function App() {
   const link = useLocation();
   const { width } = useResize();  
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [isBurgerOpen, setBurgerOpen] = useState(false);
-  const [isEdit, setEditState] = useState(false);
+  const [serverError, setServerError] = useState(''); 
+  
   const [currentUser, setCurrentUser] = useState({}); 
 
   useEffect(() => {
@@ -35,30 +38,65 @@ function App() {
   },[loggedIn]);
 
   const handleTokenCheck = () => {
-    mainApi.checkToken()         
-    .then((data) => {                               
-      if(data) {  
-        setCurrentUser(data);           
-        setLoggedIn(true);
-        navigate('/', { replace: true });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })    
-}
-
-  function handleAuthSubmit(password, email) {
-    mainApi.authorizeUser(password, email)           
-      .then((data) => {               
-        if (data) {                  
-          setCurrentUser(data.data);       
-          setLoggedIn(true);          
-          navigate('/', { replace: true });
+    mainApi.checkToken()
+      .then((res) => {              
+        if (res.ok) {          
+          setLoggedIn(true);
+          return res.json();
+        } else {
+          setLoggedIn(false);
         }
+      })
+      .then((data) => {
+        setCurrentUser(data);
       })
       .catch((err) => {
         console.log(err);
+      })
+  }
+
+  function handleRegistrationSubmit(password, email, name) {
+    mainApi.registerUser(password, email, name)
+    .then((res) => {                            
+      if (res.ok) {
+        handleAuthSubmit(password, email);
+        setServerError('');                                
+        return res.json();
+      } else {
+        return res.json();                                   
+      }      
+    })
+    .then((res) => { 
+      setServerError(res.message);
+      return Promise.reject(`Ошибка: ${res.message}`); 
+    })
+    .catch((err) => {      
+      console.log(err);
+    })
+  }
+
+  function handleAuthSubmit(password, email) {
+    mainApi.authorizeUser(password, email)           
+      .then((res) => { 
+          if(res.ok) {
+            return res.json();
+          } else {
+            return res.json();
+          }       
+      })
+      .then((res) => {
+        if (res.data) {          
+          setCurrentUser(res.data);       
+          setLoggedIn(true);          
+          navigate('/movies', { replace: true });
+          setServerError('');       
+        } else {   
+          setServerError(res.message);       
+          return Promise.reject(`Ошибка: ${res.message}`);
+        }
+      })  
+      .catch((err) => {
+        console.error(err);
       })
   } 
 
@@ -74,10 +112,23 @@ function App() {
   }
 
   function handleUpdateUser(info) {         
-    mainApi.setUserInfo(info.name, info.email).then((newUserInfo) => {      
-      setCurrentUser(newUserInfo);  
-      setEditState(false);    
+    mainApi.setUserInfo(info.name, info.email)
+    .then((res) => { 
+      if(res.ok) {
+        setServerError('');
+        return res.json();     
+      } else {
+        return res.json();
+      }                 
     })
+    .then((data) => {
+      if (data.message) {          
+        setServerError(data.message);       
+        return Promise.reject(`Ошибка: ${data.message}`);               
+      } else {   
+        setCurrentUser(data);
+      }
+    })  
     .catch((err) => {
       console.log(err);
     })   
@@ -91,31 +142,28 @@ function App() {
     setBurgerOpen(false);
   }
 
-  function allowEdit() {
-    setEditState(true);
-  } 
-
-
   return (
-    <div className="App">
-      {
-        (link.pathname === "/" || link.pathname === "/movies" || link.pathname === "/saved-movies" || link.pathname === "/profile") &&
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="App">
+        {
+          (link.pathname === "/" || link.pathname === "/movies" || link.pathname === "/saved-movies" || link.pathname === "/profile") &&
           <Header isBurgerOpen={isBurgerOpen} openBurger={openBurger} closeBurger={closeBurger} loggedIn={loggedIn} />
-      }      
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/signin" element={<Login onAuthSubmit={handleAuthSubmit} />} />
-        <Route path="/signup" element={<Register />} /> 
-        <Route path="/movies" element={<Movies width={width} />} /> 
-        <Route path="/saved-movies" element={<SavedMovies width={width} />} /> 
-        <Route path="/profile" element={<Profile allowEdit={allowEdit} isEdit={isEdit} onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} currentUser={currentUser} loggedIn={loggedIn} />} />     
-      </Routes>
-      {
-        (link.pathname === "/" || link.pathname === "/movies" || link.pathname === "/saved-movies") &&
+        }
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/signin" element={<Login serverError={serverError} onAuthSubmit={handleAuthSubmit} />} />
+          <Route path="/signup" element={<Register serverError={serverError} onRegisterUser={handleRegistrationSubmit} />} />
+          <Route path="/movies" element={<ProtectedRoute tokenCheck={handleTokenCheck} loggedIn={loggedIn} element={Movies} width={width} />} />
+          <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} loggedIn={loggedIn}  width={width} />} />
+          <Route path="/profile" element={<ProtectedRoute element={Profile} loggedIn={loggedIn} onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} serverError={serverError} />} />
+        </Routes>
+        {
+          (link.pathname === "/" || link.pathname === "/movies" || link.pathname === "/saved-movies") &&
           <Footer />
-      }        
-    </div>
+        }
+      </div>
+    </CurrentUserContext.Provider>
   );
 }
 

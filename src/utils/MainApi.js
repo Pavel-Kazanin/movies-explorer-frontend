@@ -35,8 +35,7 @@ class MainApi {
       headers: this._headers,
       credentials: 'include',
       body: JSON.stringify({ name, email })
-    })
-    .then(this._checkResponse)
+    })    
   }
 
   /*addNewCard(name, link) {
@@ -101,8 +100,7 @@ class MainApi {
       },
       credentials: 'include',
       body: JSON.stringify({password, email, name})
-    })  
-    .then(this._checkResponse)  
+    })     
   }
 
   authorizeUser(password, email) {
@@ -113,8 +111,7 @@ class MainApi {
         'Content-Type': 'application/json'
       },      
       body: JSON.stringify({password, email})
-    }) 
-    .then(this._checkResponse)    
+    })         
   }
 
   signOut() {
@@ -129,8 +126,7 @@ class MainApi {
     return fetch(`${this._url}/users/me`, {
       method: 'GET',
       credentials: 'include'      
-    })
-    .then(this._checkResponse)     
+    })         
   }
 }
 
