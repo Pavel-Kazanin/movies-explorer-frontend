@@ -1,12 +1,14 @@
 import headerLogo from "../../images/logo.svg";
-import { useEffect } from 'react';
 import AuthForm from "../AuthForm/AuthForm";
 import { Link } from 'react-router-dom';
 import useFormAndValidation from '../../hooks/useFormAndValidation';
 
 function Register({ onRegisterUser, serverError }) {   
   
-  const {values, handleChange, errors, setErrors, isValid, setIsValid } = useFormAndValidation();  
+  const {values, handleChange, errors, setErrors, isValid } = useFormAndValidation();
+
+  console.log(errors);
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();

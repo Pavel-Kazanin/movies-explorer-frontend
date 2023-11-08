@@ -1,31 +1,55 @@
-import {useState, useCallback } from 'react';
+import {useState, useCallback, useEffect } from 'react';
 
 function useFormAndValidation() {
   const [ values, setValues ] = useState({});
   const [ errors, setErrors ] = useState({});
-  const [ isValid, setIsValid ] = useState(false);  
+  const [ isValid, setIsValid ] = useState(false); 
+  
+  const emailPattern = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+  const namePattern = /^[а-яА-Яa-zA-ZЁёәіңғүұқөһӘІҢҒҮҰҚӨҺ\-\s]*$/;
+  
+  function validation(values) {
+    let errorsMy = {
+      name: '',
+      email: '',
+      password: ''
+    };    
+  
+    if (values.name === "") {
+      errorsMy.name = "Это поле не может быть пустым";
+    }
+    if (!namePattern.test(values.name)) {
+      errorsMy.name = "Имя может содержать только латиницу, кириллицу, пробел или дефис";
+    }
+    if (!emailPattern.test(values.email)) {
+      errorsMy.email = "Неверный формат электронной почты";
+    }
+    if (values.email === "") {
+      errorsMy.email = "Это поле не может быть пустым";
+    }
+    if (values.password === "") {
+      errorsMy.password = "Это поле не может быть пустым";
+    } 
+  
+    return errorsMy;
+  }
 
-  const handleChange = (e) => {
+  useEffect(() => {
+    console.log(errors); 
+    setErrors(validation(values));
+    console.log(errors);     
+  }, [values]);
 
-    const regex =/^[^ ]+@[^ ]+\.[a-z]{2,6}$/;
+  const handleChange = (e) => { 
     
+    console.log(errors);    
 
-    const {name, value} = e.target
-    setValues({...values, [name]: value }); 
-
-    if (!regex.test(name.value)) {
-      setErrors( {email: "некорректный email"});
-    } else {
-      setErrors('');
-    }    
+    const {name, value} = e.target;
+    setValues({...values, [name]: value });     
     
-    setErrors({...errors, [name]: e.target.validationMessage});
-    setIsValid(e.target.closest('form').checkValidity());
-
-
+    setIsValid(e.target.closest('form').checkValidity());   
     
   };
-
 
   const resetForm = useCallback((newValues = {}, newErrors = {}, newIsValid = false) => {
     setValues(newValues);
@@ -33,7 +57,7 @@ function useFormAndValidation() {
     setIsValid(newIsValid);
   }, [setValues, setErrors, setIsValid]);
 
-  return { values, handleChange, errors, isValid, resetForm, setValues, setIsValid };
+  return { values, handleChange, errors, setErrors, isValid, resetForm, setValues, setIsValid };
 }
 
 export default useFormAndValidation;
