@@ -14,10 +14,12 @@ class MoviesApi {
   }
 
   getMovies() {
-    return fetch(`${this._url}/`, {
-      headers: this._headers,
-      credentials: 'include'
-    })    
+    return fetch(this._url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })   
   }   
 }
 

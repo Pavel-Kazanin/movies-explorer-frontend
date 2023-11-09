@@ -1,17 +1,17 @@
 import MoviesCard from "../MoviesCard/MoviesCard";
 import NoResult from "../NoResult/NoResult";
 
-function MoviesCardList({ visibleItems, items, selector }) {
+function MoviesCardList({ visibleItems, movies, selector }) {
 
   return (
     <>
       {
-        items ?
+        !movies ?
           <NoResult />
           :
           <ul className="movies__cards">
             {
-              items.slice(0, visibleItems).map((card) => <MoviesCard key={card.id} card={card} selector={selector} />)
+              //movies.slice(0, visibleItems).map((card) => <MoviesCard key={card.id} card={card} selector={selector} />)
             }
           </ul>
 

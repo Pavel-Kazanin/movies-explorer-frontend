@@ -12,6 +12,7 @@ import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import NotFound from '../NotFound/NotFound';
 import mainApi from '../../utils/MainApi';
+import moviesApi from '../../utils/MoviesApi';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
@@ -24,7 +25,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(true);
   const [isBurgerOpen, setBurgerOpen] = useState(false);
   const [serverError, setServerError] = useState(''); 
-  
+  const [movies, setMovies] = useState({});
   const [currentUser, setCurrentUser] = useState({}); 
 
   useEffect(() => {
@@ -140,7 +141,24 @@ function App() {
 
   function closeBurger() {
     setBurgerOpen(false);
-  } 
+  }
+  
+  function getMovies() {
+    moviesApi.getMovies()
+      .then((res) => {
+        if(res.ok) {
+          return res.json();
+        } else {
+          setServerError("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
+        }
+      })
+      .then((data) => {
+        setMovies(data);        
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -154,7 +172,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/signin" element={<Login serverError={serverError} onAuthSubmit={handleAuthSubmit} />} />
           <Route path="/signup" element={<Register serverError={serverError} onRegisterUser={handleRegistrationSubmit} />} />
-          <Route path="/movies" element={<ProtectedRoute tokenCheck={handleTokenCheck} loggedIn={loggedIn} element={Movies} width={width} />} />
+          <Route path="/movies" element={<ProtectedRoute element={Movies} tokenCheck={handleTokenCheck} loggedIn={loggedIn}  width={width} getMovies={getMovies} movies={movies} />} />
           <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} loggedIn={loggedIn}  width={width} />} />
           <Route path="/profile" element={<ProtectedRoute element={Profile} loggedIn={loggedIn} onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} serverError={serverError} />} />
         </Routes>

@@ -1,8 +1,13 @@
-function SearchForm() {    
+function SearchForm({ getMovies }) { 
+  
+  function handleSubmit(e) {
+    e.preventDefault();
+    getMovies();
+  }
 
   return (
     <section className="movies__search-container search-container">
-      <form className="search-form">
+      <form className="search-form" onSubmit={handleSubmit}>
         <div className="search-form__global-search global-search">
           <input type="text" name="text" className="global-search__text" placeholder="Фильм" />
           <input type="submit" name="submit" className="global-search__submit-button" value="Найти" />
