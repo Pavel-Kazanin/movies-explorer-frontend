@@ -1,17 +1,17 @@
 import MoviesCard from "../MoviesCard/MoviesCard";
-import NoResult from "../NoResult/NoResult";
+import Preloader from "../Preloader/Preloader";
 
-function MoviesCardList({ visibleItems, movies, selector }) {
+function MoviesCardList({ visibleItems, items, selector, isLoading }) {  
 
   return (
     <>
       {
-        !movies ?
-          <NoResult />
+        isLoading ?
+          <Preloader />
           :
           <ul className="movies__cards">
             {
-              //movies.slice(0, visibleItems).map((card) => <MoviesCard key={card.id} card={card} selector={selector} />)
+              items.slice(0, visibleItems).map((card) => <MoviesCard key={card.id} card={card} selector={selector} />)
             }
           </ul>
 

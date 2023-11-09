@@ -23,15 +23,16 @@ function App() {
   const { width } = useResize();  
 
   const [loggedIn, setLoggedIn] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isBurgerOpen, setBurgerOpen] = useState(false);
-  const [serverError, setServerError] = useState(''); 
-  const [movies, setMovies] = useState({});
+  const [serverError, setServerError] = useState('Ничего не найдено'); 
+  const [movies, setMovies] = useState([]);
   const [currentUser, setCurrentUser] = useState({}); 
 
   useEffect(() => {
     if (width > 768) {
       closeBurger();
-    }
+    }    
   }, [width]);
 
   useEffect(() => {
@@ -144,20 +145,25 @@ function App() {
   }
   
   function getMovies() {
-    moviesApi.getMovies()
+    setIsLoading(true); 
+    moviesApi.getMovies()    
       .then((res) => {
-        if(res.ok) {
+        if(res.ok) {          
           return res.json();
         } else {
           setServerError("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
         }
       })
       .then((data) => {
-        setMovies(data);        
+        setMovies(data);
+        window.localStorage.setItem('movies', data);        
       })
       .catch((err) => {
         console.log(err);
       })
+      .finally(() => {
+        setIsLoading(false);          
+      });
   }
 
   return (
@@ -172,7 +178,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/signin" element={<Login serverError={serverError} onAuthSubmit={handleAuthSubmit} />} />
           <Route path="/signup" element={<Register serverError={serverError} onRegisterUser={handleRegistrationSubmit} />} />
-          <Route path="/movies" element={<ProtectedRoute element={Movies} tokenCheck={handleTokenCheck} loggedIn={loggedIn}  width={width} getMovies={getMovies} movies={movies} />} />
+          <Route path="/movies" element={<ProtectedRoute element={Movies} serverError={serverError} isLoading={isLoading} tokenCheck={handleTokenCheck} loggedIn={loggedIn}  width={width} getMovies={getMovies} movies={movies} />} />
           <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} loggedIn={loggedIn}  width={width} />} />
           <Route path="/profile" element={<ProtectedRoute element={Profile} loggedIn={loggedIn} onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} serverError={serverError} />} />
         </Routes>

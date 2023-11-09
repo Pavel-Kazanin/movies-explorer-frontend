@@ -1,8 +1,8 @@
-function NoResult() {    
+function NoResult({serverError}) {    
 
   return (
     <section className="no-result">
-      <p className="no-result__text">Ничего не найдено</p>
+      <p className="no-result__text">{serverError}</p>
     </section>
   )
 }
