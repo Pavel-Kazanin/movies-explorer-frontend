@@ -140,7 +140,7 @@ function App() {
 
   function closeBurger() {
     setBurgerOpen(false);
-  }
+  } 
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

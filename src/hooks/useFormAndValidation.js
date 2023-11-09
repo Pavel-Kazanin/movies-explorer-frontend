@@ -1,54 +1,52 @@
-import {useState, useCallback, useEffect } from 'react';
+/*import {useState, useCallback } from 'react';
 
 function useFormAndValidation() {
   const [ values, setValues ] = useState({});
-  const [ errors, setErrors ] = useState({});
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
   const [ isValid, setIsValid ] = useState(false); 
   
-  const emailPattern = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-  const namePattern = /^[а-яА-Яa-zA-ZЁёәіңғүұқөһӘІҢҒҮҰҚӨҺ\-\s]*$/;
+  const emailPattern = /^\S+@\S+\.\S+$/;
+  const namePattern = /^[а-яА-Яa-zA-ZЁёәіңғүұқөһӘІҢҒҮҰҚӨҺ\-\s]*$/;*/
   
-  function validation(values) {
+  /*function validation(iputsValue) {
     let errorsMy = {
       name: '',
       email: '',
       password: ''
     };    
-  
-    if (values.name === "") {
-      errorsMy.name = "Это поле не может быть пустым";
-    }
-    if (!namePattern.test(values.name)) {
-      errorsMy.name = "Имя может содержать только латиницу, кириллицу, пробел или дефис";
-    }
-    if (!emailPattern.test(values.email)) {
-      errorsMy.email = "Неверный формат электронной почты";
-    }
-    if (values.email === "") {
+    
+    if (iputsValue.email === "") {
       errorsMy.email = "Это поле не может быть пустым";
     }
-    if (values.password === "") {
+    if (!/^((^$)|(\w+@\w+\.\w+)$)/.test(iputsValue.email)) {
+      errorsMy.email = "Неверный формат электронной почты";
+    }  
+    if (iputsValue.name === "") {
+      errorsMy.name = "Это поле не может быть пустым";
+    }
+    if (!/^[а-яА-Яa-zA-ZЁёәіңғүұқөһӘІҢҒҮҰҚӨҺ\-\s]*$/.test(iputsValue.name)) {
+      errorsMy.name = "Имя может содержать только латиницу, кириллицу, пробел или дефис";
+    }   
+    if (iputsValue.password === "") {
       errorsMy.password = "Это поле не может быть пустым";
     } 
   
     return errorsMy;
-  }
+  }   
 
-  useEffect(() => {
-    console.log(errors); 
-    setErrors(validation(values));
-    console.log(errors);     
+  useEffect(() => {     
+    setErrors(validation(values));    
   }, [values]);
 
-  const handleChange = (e) => { 
-    
-    console.log(errors);    
+  const handleChange = (e) => {        
 
     const {name, value} = e.target;
     setValues({...values, [name]: value });     
-    
-    setIsValid(e.target.closest('form').checkValidity());   
-    
+    setIsValid(e.target.closest('form').checkValidity());    
   };
 
   const resetForm = useCallback((newValues = {}, newErrors = {}, newIsValid = false) => {
@@ -60,4 +58,4 @@ function useFormAndValidation() {
   return { values, handleChange, errors, setErrors, isValid, resetForm, setValues, setIsValid };
 }
 
-export default useFormAndValidation;
+export default useFormAndValidation;*/

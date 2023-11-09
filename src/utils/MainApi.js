@@ -19,15 +19,7 @@ class MainApi {
       credentials: 'include'
     })
     .then(this._checkResponse)
-  }
-
-  /*getInitialCards() {
-    return fetch(`${this._url}/cards`, {
-      headers: this._headers,
-      credentials: 'include'
-    })
-    .then(this._checkResponse)
-  }*/
+  } 
 
   setUserInfo(name, email) {
     return fetch(`${this._url}/users/me`, {
@@ -36,61 +28,7 @@ class MainApi {
       credentials: 'include',
       body: JSON.stringify({ name, email })
     })    
-  }
-
-  /*addNewCard(name, link) {
-    return fetch(`${this._url}/cards`, {
-      method: 'POST',
-      headers: this._headers,
-      credentials: 'include',
-      body: JSON.stringify({ name, link })
-    })
-    .then(this._checkResponse)
-  }*/
-
-  /*getLikes() {
-    return fetch(`${this._url}/cards`, {
-      headers: this._headers
-    })
-    .then(this._checkResponse)
-  }*/
-
-  /*deleteCard(cardId) {
-    return fetch(`${this._url}/cards/${cardId}`, {
-      method: 'DELETE',
-      headers: this._headers,
-      credentials: 'include'
-    })
-    .then(this._checkResponse)
-  }*/
-
-  /*addLike(cardId) {
-    return fetch(`${this._url}/cards/${cardId}/likes`, {
-      method: 'PUT',
-      headers: this._headers,
-      credentials: 'include'
-    })
-    .then(this._checkResponse)
-  }*/
-
-  /*deleteLike(cardId) {
-    return fetch(`${this._url}/cards/${cardId}/likes`, {
-      method: 'DELETE',
-      headers: this._headers,
-      credentials: 'include'
-    })
-    .then(this._checkResponse)
-  }*/
-
-  /*changeAvatar(avatar) {
-    return fetch(`${this._url}/users/me/avatar`, {
-      method: 'PATCH',
-      headers: this._headers,
-      credentials: 'include',
-      body: JSON.stringify({ avatar })
-    })
-    .then(this._checkResponse)
-  }*/
+  }  
 
   registerUser(password, email, name) {
     return fetch(`${this._url}/signup`, {

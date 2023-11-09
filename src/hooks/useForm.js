@@ -1,46 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 
-function useForm(inputValues) {
-  const [values, setValues] = useState(inputValues);
-  const [errors, setErrors] = useState({});
-  const [isValid, setIsValid] = useState(false); 
-  
-  function validation(values) {
-    let errorsMy = {
-      name: '',
-      email: ''
+const useFormValidation = (fields) => {
+    const [values, setValues] = useState({});
+    const [errors, setErrors] = useState({});
+    const [required, setRequired] = useState([])
+    const [isFormValid, setIsFormValid] = useState(false);
+
+    useEffect(() => {
+      setIsFormValid((Object.keys(errors).length === 0) && (required.length === fields.length));
+    }, [errors]);
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setValues((prevData) => ({...prevData, [name]: value}));
+        validateField(name, value)
     };
-  
-    const emailPattern = /^\S+@\S+\.\S+$/;
-    const namePattern = /^[а-яА-Яa-zA-ZЁёәіңғүұқөһӘІҢҒҮҰҚӨҺ\-\s]*$/;
-  
-    if (values.name === "") {
-      errorsMy.name = "Not be empty";
-    }
-    if (!namePattern.test(values.name)) {
-      errorsMy.name = "Incorrect format name";
-    }
-    if (!emailPattern.test(values.email)) {
-      errorsMy.email = "Incorrect format";
-    }
-    if (values.email === "") {
-      errorsMy.email = "Not be empty";
-    }
-  
-  
-    return errorsMy;
-  }
-  
-  const handleChange = (event) => {
-    console.log("123");
-     
-    const {value, name} = event.target;
-    setValues({...values, [name]: value}); 
-    setErrors(validation(values));
-        
-  };
 
-  return {values, handleChange, setValues, errors, setErrors, isValid, setIsValid };
-}
+    const validateField = (name, value) => {
+        const field = fields.find((f) => f.name === name);
+        if (!required.some((el) => el === field.name)) {
+            setRequired((prev) => [...prev, field.name])
+        }
+        if (field && field.valid && !field.valid.test(value)) {
+            setErrors((prevErrors) => ({ ...prevErrors, [name]: field.errors }));
+        } else {
+            setErrors((prevErrors) => {
+                const newErrors = { ...prevErrors };
+                delete newErrors[name];
+                return newErrors;
+            });
+        }
+        if (field && required.some((el) => el === field.name) && value === '') {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                [name]: 'Поле не может быть пустым',
+            }));
+        }
+    };
 
-export default useForm;
+    return { values, setValues, errors, handleChange, isFormValid, setIsFormValid };
+};
+
+export default useFormValidation;

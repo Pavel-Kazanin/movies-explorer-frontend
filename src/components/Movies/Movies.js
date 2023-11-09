@@ -5,7 +5,7 @@ import cardLink from "../../images/movies/33 слова о дизайне.jpg";
 
 function Movies({width}) {
 
-  const initialCards = [
+  /*const initialCards = [
     {
       name: '33 слова о дизайне',
       link: cardLink,
@@ -181,7 +181,7 @@ function Movies({width}) {
       saved: false,
       id: 25
     }
-  ];
+  ];*/
 
   const [items, setItems] = useState([]);
   const [visibleItems, setVisibleItems] = useState();
@@ -198,7 +198,7 @@ function Movies({width}) {
   }, [width])
 
   useEffect(() => {
-    setItems(initialCards);      
+    setItems({});      
     if (items.length > 0 && items.length <= visibleItems) {
       setVisibleButton(false);
     };  
@@ -212,9 +212,11 @@ function Movies({width}) {
     <section className="movies">
       <SearchForm />
       <MoviesCardList selector="card" visibleItems={visibleItems} items={items} />
-      <div className={`show-more ${!visibleButton && "show-more_hidden"}`}>
+      {
+        !items && <div className={`show-more ${!visibleButton && "show-more_hidden"}`}>
         <button className="show-more__button" type="buttuon" onClick={showMore}>Еще</button>
-      </div>      
+      </div>  
+      }          
     </section>  
   )
 }
