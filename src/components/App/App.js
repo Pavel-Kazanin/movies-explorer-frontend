@@ -25,18 +25,13 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isBurgerOpen, setBurgerOpen] = useState(false);
+  const [isEdit, setEditState] = useState(false); 
   const [serverError, setServerError] = useState(''); 
   const [currentUser, setCurrentUser] = useState({});
   const [movies, setMovies] = useState([]); 
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [currentMovies, setCurrentMovies] = useState([]);   
-  const [searchValue, setSearchValue] = useState('');
-  
-  console.log(checkboxChecked);
-  console.log(localStorage);
-  console.log(`Movies ${movies.length}`);
-  console.log(`Current ${currentMovies.length}`);
-
+  const [searchValue, setSearchValue] = useState('');   
 
   useEffect(() => {
     if (width > 768) {
@@ -108,8 +103,7 @@ function App() {
         if (res.data) {          
           setCurrentUser(res.data);       
           setLoggedIn(true);          
-          navigate('/movies', { replace: true });
-          setServerError('');       
+          navigate('/movies', { replace: true });                 
         } else {   
           setServerError(res.message);       
           return Promise.reject(`Ошибка: ${res.message}`);
@@ -125,7 +119,11 @@ function App() {
     .then(() => {
       setLoggedIn(false);
       localStorage.clear();
-      navigate('/signin', { replace: true });
+      setMovies([]);
+      setCurrentMovies([]);
+      setSearchValue('');
+      setCheckboxChecked(false);
+      navigate('/', { replace: true });
     }) 
     .catch((err) => {
       console.log(err);
@@ -135,10 +133,11 @@ function App() {
   function handleUpdateUser(info) {         
     mainApi.setUserInfo(info.name, info.email)
     .then((res) => { 
-      if(res.ok) {
-        setServerError('');
-        return res.json();     
-      } else {
+      if(res.ok) {   
+        setServerError('Данные успешно обновлены');
+        setEditState(false);                   
+        return res.json();                  
+      } else {             
         return res.json();
       }                 
     })
@@ -163,13 +162,18 @@ function App() {
     setBurgerOpen(false);
   }
 
-  const filterMovies = (search, checkboxStatus, films) => {
-    setSearchValue(search);
+  function setLocalStorage(films, search, checkboxStatus) {
     localStorage.setItem('movies', JSON.stringify(films));
     localStorage.setItem('searchRequest', JSON.stringify(search));
     localStorage.setItem('checkboxState', JSON.stringify(checkboxStatus));
+  }
+
+  const filterMovies = (search, checkboxStatus, films) => {
+    setSearchValue(search);
+    setLocalStorage(films, search, checkboxStatus);    
     setCurrentMovies(films.filter((item) => {
-      const filteredMovies = item.nameRU.toLowerCase().includes(search);
+      const name = item.nameRU +  item.nameEN;      
+      const filteredMovies = name.toLowerCase().includes(search);
       return checkboxStatus ? (filteredMovies && item.duration <= 40) : filteredMovies;
     }))
   };
@@ -179,10 +183,11 @@ function App() {
     if (movies.length === 0){
       moviesApi.getMovies()    
       .then((res) => {
-        if(res.ok) {          
-          return res.json();
+        if(res.ok) {
+          setServerError(false);          
+          return res.json();          
         } else {
-          setServerError("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
+          setServerError('Jib,rf');
         }
       })
       .then((data) => {
@@ -190,6 +195,7 @@ function App() {
         filterMovies(searchValue, checkboxChecked, data);        
       })
       .catch((err) => {
+        setServerError(true);
         console.log(err);
       })
       .finally(() => {
@@ -209,9 +215,9 @@ function App() {
       setCheckboxChecked(true);    
       filterMovies(searchValue, true, movies);
     }
-  }
+  }  
 
-  
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -226,8 +232,8 @@ function App() {
           <Route path="/signin" element={<Login serverError={serverError} onAuthSubmit={handleAuthSubmit} />} />
           <Route path="/signup" element={<Register serverError={serverError} onRegisterUser={handleRegistrationSubmit} />} />
           <Route path="/movies" element={<ProtectedRoute element={Movies} getShortMovies={getShortMovies} checkboxChecked={checkboxChecked} setCheckboxChecked={setCheckboxChecked} serverError={serverError} searchValue={searchValue} setSearchValue={setSearchValue} isLoading={isLoading} tokenCheck={handleTokenCheck} loggedIn={loggedIn}  width={width} getSearchMovies={getMovies} currentMovies={currentMovies} />} />
-          <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} loggedIn={loggedIn}  width={width} />} />
-          <Route path="/profile" element={<ProtectedRoute element={Profile} loggedIn={loggedIn} onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} serverError={serverError} />} />
+          <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} filterMovies={filterMovies} loggedIn={loggedIn}  width={width} />} />
+          <Route path="/profile" element={<ProtectedRoute element={Profile} isEdit={isEdit} setEditState={setEditState} loggedIn={loggedIn} onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} serverError={serverError} />} />
         </Routes>
         {
           (link.pathname === "/" || link.pathname === "/movies" || link.pathname === "/saved-movies") &&

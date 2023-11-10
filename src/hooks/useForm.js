@@ -4,11 +4,21 @@ const useFormValidation = (fields) => {
     const [values, setValues] = useState({});
     const [errors, setErrors] = useState({});
     const [required, setRequired] = useState([])
-    const [isFormValid, setIsFormValid] = useState(false);
-
+    const [isFormValid, setIsFormValid] = useState(false);   
+    
     useEffect(() => {
-      setIsFormValid((Object.keys(errors).length === 0) && (required.length === fields.length));
-    }, [errors]);
+        if (fields[0].value) {
+            setValues({name: fields[0].value, email: fields[1].value})
+        }
+    }, []);
+    
+    useEffect(() => {
+        if (!fields[0].value) {
+            setIsFormValid((Object.keys(errors).length === 0) && (required.length === fields.length));
+        } else {
+            setIsFormValid((Object.keys(errors).length === 0)  && ((values['name'] !== fields[0].value) || (values['email'] !== fields[1].value)));
+        }
+    }, [errors, values]);    
 
     const handleChange = (e) => {
         const {name, value} = e.target;

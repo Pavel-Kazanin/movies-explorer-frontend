@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 
-function MoviesCard({card, selector}) {
+function MoviesCard({card, selector }) {
 
-  const [isSaved, setSaved] = useState(false);  
+  const [isSaved, setSaved] = useState(false);
+  const link = useLocation();  
 
   useEffect(() => {
     if (card.saved) {
@@ -10,7 +12,7 @@ function MoviesCard({card, selector}) {
     } else {
       setSaved(false);
     }
-  }, []);
+  }, [card.saved]);
 
   function toggleLike() {
     setSaved(!isSaved);
@@ -29,7 +31,7 @@ function MoviesCard({card, selector}) {
   return (
 
     <li className={`movies__card card ${selector}`}>
-      <a className="card__trailer-link" href={card.trailerLink} target="_blank" rel="noreferrer"><img className="card__image" alt="33 слова о дизайне" src={`https://api.nomoreparties.co/${card.image.url}`} /></a>
+      <a className="card__trailer-link" href={card.trailerLink} target="_blank" rel="noreferrer"><img className="card__image" alt={card.nameRU} src={link.pathname === "/movies" ? `https://api.nomoreparties.co/${card.image.url}` : card.image} /></a>
       <div className="card__description">
         <h2 className="card__title">{card.nameRU}</h2>
         <button className={`${selector}__like ${isSaved && 'card__like_active'}`} name="card-like" type="button" value="add-like" onClick={toggleLike}></button>

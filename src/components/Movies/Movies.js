@@ -8,10 +8,8 @@ function Movies({ width, getSearchMovies, currentMovies, isLoading, serverError,
   
   const [visibleItems, setVisibleItems] = useState();
   const [additionalCard, setAdditionalCard] = useState();
-  const [visibleButton, setVisibleButton] = useState(false);    
-
-  console.log(`Видимые эелементы ${visibleItems}`);
-
+  const [visibleButton, setVisibleButton] = useState(false);
+  
   useEffect(() => {       
     if (width >= 1280) {
       setVisibleItems(16);
@@ -55,7 +53,7 @@ function Movies({ width, getSearchMovies, currentMovies, isLoading, serverError,
           isLoading ?
           <Preloader />
           :
-          <NoResult serverError={serverError} />
+          <NoResult serverError={serverError ? "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз" : "Ничего не найдено"} />
       }
     </section>
   )

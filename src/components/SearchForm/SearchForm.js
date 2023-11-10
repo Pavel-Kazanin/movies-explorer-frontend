@@ -1,4 +1,4 @@
-function SearchForm({ getMovies, searchValue, setSearchValue, checkboxChecked, setCheckboxChecked, getShortMovies }) { 
+function SearchForm({ getMovies, searchValue, setSearchValue, checkboxChecked, getShortMovies }) { 
 
   function handleChange(e) {
     const {value} = e.target;

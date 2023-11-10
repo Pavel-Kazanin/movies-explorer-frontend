@@ -66,6 +66,21 @@ class MainApi {
       credentials: 'include'      
     })         
   }
+
+  getSavedMovies() {
+    return fetch(`${this._url}/movies`, {
+      method: 'GET',
+      credentials: 'include'     
+    })
+  }
+
+  setSavedMovies(country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN) {
+    return fetch(`${this._url}/movies`, {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify({country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN})    
+    })
+  }
 }
 
 const mainApi = new MainApi({
