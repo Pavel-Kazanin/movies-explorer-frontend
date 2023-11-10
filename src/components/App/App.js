@@ -25,9 +25,18 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isBurgerOpen, setBurgerOpen] = useState(false);
-  const [serverError, setServerError] = useState('Ничего не найдено'); 
-  const [movies, setMovies] = useState([]);
-  const [currentUser, setCurrentUser] = useState({}); 
+  const [serverError, setServerError] = useState(''); 
+  const [currentUser, setCurrentUser] = useState({});
+  const [movies, setMovies] = useState([]); 
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [currentMovies, setCurrentMovies] = useState([]);   
+  const [searchValue, setSearchValue] = useState('');
+  
+  console.log(checkboxChecked);
+  console.log(localStorage);
+  console.log(`Movies ${movies.length}`);
+  console.log(`Current ${currentMovies.length}`);
+
 
   useEffect(() => {
     if (width > 768) {
@@ -36,7 +45,16 @@ function App() {
   }, [width]);
 
   useEffect(() => {
-    handleTokenCheck();    
+    if (localStorage.searchRequest && localStorage.checkboxState && localStorage.movies) { 
+      setCurrentMovies(JSON.parse(localStorage.movies));
+      setSearchValue(JSON.parse(localStorage.searchRequest));
+      setCheckboxChecked(JSON.parse(localStorage.checkboxState));   
+      filterMovies(JSON.parse(localStorage.searchRequest), JSON.parse(localStorage.checkboxState), JSON.parse(localStorage.movies));
+    }   
+  }, [])
+
+  useEffect(() => {    
+    handleTokenCheck();     
   },[loggedIn]);
 
   const handleTokenCheck = () => {
@@ -106,6 +124,7 @@ function App() {
     mainApi.signOut()    
     .then(() => {
       setLoggedIn(false);
+      localStorage.clear();
       navigate('/signin', { replace: true });
     }) 
     .catch((err) => {
@@ -143,10 +162,22 @@ function App() {
   function closeBurger() {
     setBurgerOpen(false);
   }
+
+  const filterMovies = (search, checkboxStatus, films) => {
+    setSearchValue(search);
+    localStorage.setItem('movies', JSON.stringify(films));
+    localStorage.setItem('searchRequest', JSON.stringify(search));
+    localStorage.setItem('checkboxState', JSON.stringify(checkboxStatus));
+    setCurrentMovies(films.filter((item) => {
+      const filteredMovies = item.nameRU.toLowerCase().includes(search);
+      return checkboxStatus ? (filteredMovies && item.duration <= 40) : filteredMovies;
+    }))
+  };
   
   function getMovies() {
-    setIsLoading(true); 
-    moviesApi.getMovies()    
+    setIsLoading(true);
+    if (movies.length === 0){
+      moviesApi.getMovies()    
       .then((res) => {
         if(res.ok) {          
           return res.json();
@@ -155,8 +186,8 @@ function App() {
         }
       })
       .then((data) => {
-        setMovies(data);
-        window.localStorage.setItem('movies', data);        
+        setMovies(data); 
+        filterMovies(searchValue, checkboxChecked, data);        
       })
       .catch((err) => {
         console.log(err);
@@ -164,7 +195,23 @@ function App() {
       .finally(() => {
         setIsLoading(false);          
       });
+    } else {
+      filterMovies(searchValue, checkboxChecked, movies);
+      setIsLoading(false);
+    }    
   }
+
+  function getShortMovies() {        
+    if(checkboxChecked) {
+      setCheckboxChecked(false);
+      filterMovies(searchValue, false, movies);
+    } else {  
+      setCheckboxChecked(true);    
+      filterMovies(searchValue, true, movies);
+    }
+  }
+
+  
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -178,7 +225,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/signin" element={<Login serverError={serverError} onAuthSubmit={handleAuthSubmit} />} />
           <Route path="/signup" element={<Register serverError={serverError} onRegisterUser={handleRegistrationSubmit} />} />
-          <Route path="/movies" element={<ProtectedRoute element={Movies} serverError={serverError} isLoading={isLoading} tokenCheck={handleTokenCheck} loggedIn={loggedIn}  width={width} getMovies={getMovies} movies={movies} />} />
+          <Route path="/movies" element={<ProtectedRoute element={Movies} getShortMovies={getShortMovies} checkboxChecked={checkboxChecked} setCheckboxChecked={setCheckboxChecked} serverError={serverError} searchValue={searchValue} setSearchValue={setSearchValue} isLoading={isLoading} tokenCheck={handleTokenCheck} loggedIn={loggedIn}  width={width} getSearchMovies={getMovies} currentMovies={currentMovies} />} />
           <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} loggedIn={loggedIn}  width={width} />} />
           <Route path="/profile" element={<ProtectedRoute element={Profile} loggedIn={loggedIn} onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} serverError={serverError} />} />
         </Routes>

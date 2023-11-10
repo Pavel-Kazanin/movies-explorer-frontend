@@ -1,26 +1,26 @@
-import { useState } from "react";
-
-function SearchForm({ getMovies }) { 
-
-  const [searchValue, setSearchValue] = useState('');  
+function SearchForm({ getMovies, searchValue, setSearchValue, checkboxChecked, setCheckboxChecked, getShortMovies }) { 
 
   function handleChange(e) {
     const {value} = e.target;
     setSearchValue(value);    
-  }
+  } 
 
   function handleFocus() {
-    setSearchValue(''); 
+    if (searchValue === "Нужно ввести ключевое слово") {
+      setSearchValue('');
+    }
+  }
+
+  function handleCheckboxClick() {
+    getShortMovies();    
   }
   
   function handleSubmit(e) {
     e.preventDefault();
     if (searchValue === '') {
       setSearchValue('Нужно ввести ключевое слово');
-    } else {
+    } else {      
       getMovies();
-      window.localStorage.setItem('searchRequest', searchValue);
-      console.log(window.localStorage);
     }    
   }
 
@@ -32,7 +32,7 @@ function SearchForm({ getMovies }) {
           <input type="submit" name="submit" className="global-search__submit-button" value="Найти" />
         </div>
         <div className="search-form__short-filter short-filter">
-          <input id="checkbox-input" className="short-filter__checkbox" type="checkbox" name="checkbox" />
+          <input id="checkbox-input" className="short-filter__checkbox" type="checkbox" name="checkbox" onChange={handleCheckboxClick} checked={checkboxChecked}  />
           <label className="short-filter__label" htmlFor="checkbox-input">Короткометражки</label>
         </div>
       </form>

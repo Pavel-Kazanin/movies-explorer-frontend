@@ -1,7 +1,7 @@
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../Preloader/Preloader";
 
-function MoviesCardList({ visibleItems, items, selector, isLoading }) {  
+function MoviesCardList({ visibleItems, items, selector, isLoading }) {   
 
   return (
     <>

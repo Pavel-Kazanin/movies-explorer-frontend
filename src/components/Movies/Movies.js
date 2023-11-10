@@ -4,11 +4,13 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import NoResult from "../NoResult/NoResult";
 import Preloader from '../Preloader/Preloader';
 
-function Movies({ width, getMovies, movies, isLoading, serverError }) {   
+function Movies({ width, getSearchMovies, currentMovies, isLoading, serverError, searchValue, setSearchValue, checkboxChecked, setCheckboxChecked, getShortMovies }) {   
   
   const [visibleItems, setVisibleItems] = useState();
   const [additionalCard, setAdditionalCard] = useState();
-  const [visibleButton, setVisibleButton] = useState(false);
+  const [visibleButton, setVisibleButton] = useState(false);    
+
+  console.log(`Видимые эелементы ${visibleItems}`);
 
   useEffect(() => {       
     if (width >= 1280) {
@@ -24,27 +26,27 @@ function Movies({ width, getMovies, movies, isLoading, serverError }) {
       setVisibleItems(5);
       setAdditionalCard(1);
     }    
-  }, [width, additionalCard])
+  }, [width, additionalCard])    
 
-  useEffect(() => {
-    if (movies.length > 0 && movies.length <= visibleItems) {
+  useEffect(() => {    
+    if (currentMovies.length > 0 && currentMovies.length <= visibleItems) {
       setVisibleButton(false);
     } else {
       setVisibleButton(true);
     }  
-  }, [movies, visibleItems]);
+  }, [currentMovies, visibleItems]);
 
   function showMore() {
     setVisibleItems((previousValue) => previousValue + additionalCard);                 
-  }  
+  }    
 
   return (
     <section className="movies">
-      <SearchForm getMovies={getMovies} />
+      <SearchForm getMovies={getSearchMovies} getShortMovies={getShortMovies} searchValue={searchValue} setSearchValue={setSearchValue} checkboxChecked={checkboxChecked} setCheckboxChecked={setCheckboxChecked} />
       {
-        movies.length ?
+        currentMovies.length ?
           <>
-            <MoviesCardList selector="card" visibleItems={visibleItems} additionalCard={additionalCard} items={movies} isLoading={isLoading} />
+            <MoviesCardList selector="card" visibleItems={visibleItems} additionalCard={additionalCard} items={currentMovies} isLoading={isLoading} searchValue={searchValue} />
             <div className={`show-more ${!visibleButton && "show-more_hidden"}`}>
               <button className="show-more__button" type="buttuon" onClick={showMore}>Еще</button>
             </div>
