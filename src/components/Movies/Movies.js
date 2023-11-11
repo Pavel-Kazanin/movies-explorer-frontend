@@ -4,7 +4,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import NoResult from "../NoResult/NoResult";
 import Preloader from '../Preloader/Preloader';
 
-function Movies({ width, addToSavedMovies, savedMovies, apiMovies, getSearchMovies, currentMovies, isLoading, serverError, searchValue, setSearchValue, checkboxChecked, setCheckboxChecked, getShortMovies }) {   
+function Movies({ width, addToSavedMovies, deleteSavedMovies, savedMovies, apiMovies, getSearchMovies, currentMovies, isLoading, serverError, searchValue, setSearchValue, checkboxChecked, setCheckboxChecked, getShortMovies }) {   
   
   const [visibleItems, setVisibleItems] = useState();
   const [additionalCard, setAdditionalCard] = useState();
@@ -44,7 +44,7 @@ function Movies({ width, addToSavedMovies, savedMovies, apiMovies, getSearchMovi
       {
         currentMovies.length ?
           <>
-            <MoviesCardList selector="card" addToSavedMovies={addToSavedMovies} savedMovies={savedMovies} apiMovies={apiMovies} visibleItems={visibleItems} additionalCard={additionalCard} items={currentMovies} isLoading={isLoading} searchValue={searchValue} />
+            <MoviesCardList selector="card" deleteSavedMovies={deleteSavedMovies} addToSavedMovies={addToSavedMovies} savedMovies={savedMovies} apiMovies={apiMovies} visibleItems={visibleItems} additionalCard={additionalCard} items={currentMovies} isLoading={isLoading} searchValue={searchValue} />
             <div className={`show-more ${!visibleButton && "show-more_hidden"}`}>
               <button className="show-more__button" type="buttuon" onClick={showMore}>Еще</button>
             </div>

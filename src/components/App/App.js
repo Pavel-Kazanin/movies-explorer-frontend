@@ -174,8 +174,8 @@ function App() {
     setSearchValue(search);
     setLocalStorage(films, search, checkboxStatus);    
     setCurrentMovies(films.filter((item) => {
-      const name = item.nameRU +  item.nameEN;      
-      const filteredMovies = name.toLowerCase().includes(search);
+      const name = item.nameRU +  item.nameEN;            
+      const filteredMovies = name.toLowerCase().includes(search.toLowerCase());
       return checkboxStatus ? (filteredMovies && item.duration <= 40) : filteredMovies;
     }))
   };
@@ -242,6 +242,16 @@ function App() {
     })
   }
 
+  function deleteSavedMovies(movieCard) {
+    mainApi.deleteMovie(movieCard).then(() => {
+      const newCards = savedMovies.filter(item => item._id !== movieCard);
+      setSavedMovies(newCards);    
+    })
+    .catch((err) => {
+      console.log(err);
+    })   
+  }
+
   function getShortMovies() {        
     if(checkboxChecked) {
       setCheckboxChecked(false);
@@ -266,8 +276,8 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/signin" element={<Login serverError={serverError} onAuthSubmit={handleAuthSubmit} />} />
           <Route path="/signup" element={<Register serverError={serverError} onRegisterUser={handleRegistrationSubmit} />} />
-          <Route path="/movies" element={<ProtectedRoute element={Movies} addToSavedMovies={addToSavedMovies} apiMovies={movies} savedMovies={savedMovies} getShortMovies={getShortMovies} checkboxChecked={checkboxChecked} setCheckboxChecked={setCheckboxChecked} serverError={serverError} searchValue={searchValue} setSearchValue={setSearchValue} isLoading={isLoading} tokenCheck={handleTokenCheck} loggedIn={loggedIn}  width={width} getSearchMovies={getMovies} currentMovies={currentMovies} />} />
-          <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} filterMovies={filterMovies} loggedIn={loggedIn}  width={width} savedMovies={savedMovies} />} />
+          <Route path="/movies" element={<ProtectedRoute element={Movies} deleteSavedMovies={deleteSavedMovies} addToSavedMovies={addToSavedMovies} apiMovies={movies} savedMovies={savedMovies} getShortMovies={getShortMovies} checkboxChecked={checkboxChecked} setCheckboxChecked={setCheckboxChecked} serverError={serverError} searchValue={searchValue} setSearchValue={setSearchValue} isLoading={isLoading} tokenCheck={handleTokenCheck} loggedIn={loggedIn}  width={width} getSearchMovies={getMovies} currentMovies={currentMovies} />} />
+          <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} deleteSavedMovies={deleteSavedMovies} filterMovies={filterMovies} loggedIn={loggedIn}  width={width} savedMovies={savedMovies} />} />
           <Route path="/profile" element={<ProtectedRoute element={Profile} isEdit={isEdit} setEditState={setEditState} loggedIn={loggedIn} onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} serverError={serverError} />} />
         </Routes>
         {

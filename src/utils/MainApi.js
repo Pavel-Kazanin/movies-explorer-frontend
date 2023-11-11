@@ -74,13 +74,19 @@ class MainApi {
     })
   }
 
+  deleteMovie(movieId) {
+    return fetch(`${this._url}/movies/${movieId}`, {
+      method: 'DELETE',
+      headers: this._headers,
+      credentials: 'include'
+    })    
+  }
+
   setSavedMovies(country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN) {
     return fetch(`${this._url}/movies`, {
       method: 'POST',
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      }, 
+      headers: this._headers, 
       body: JSON.stringify({country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN})    
     })
   }

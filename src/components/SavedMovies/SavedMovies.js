@@ -5,7 +5,7 @@ import Preloader from '../Preloader/Preloader';
 import NoResult from '../NoResult/NoResult';
 
 
-function SavedMovies({ isLoading, serverError, savedMovies, getSearchMovies }) {
+function SavedMovies({ isLoading, serverError, savedMovies }) {
   
   const [currentSavedMovies, setCurrentSavedMovies] = useState([]);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
