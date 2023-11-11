@@ -1,43 +1,21 @@
 import { useState, useEffect } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import mainApi from '../../utils/MainApi';
 import Preloader from '../Preloader/Preloader';
 import NoResult from '../NoResult/NoResult';
 
 
-function SavedMovies({ isLoading, serverError }) {
-
-  const [savedMovies, setSavedMovies] = useState([]); 
+function SavedMovies({ isLoading, serverError, savedMovies, getSearchMovies }) {
+  
   const [currentSavedMovies, setCurrentSavedMovies] = useState([]);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');  
 
   useEffect(() => {
-    getSavedMovies();    
-  }, [])
+    setCurrentSavedMovies(savedMovies);    
+  }, [savedMovies]);  
 
-  function getSavedMovies() {
-    mainApi.getSavedMovies()    
-      .then((res) => {
-        if(res.ok) {                    
-          return res.json();          
-        } else {
-          return res.json();
-        }
-      })
-      .then((data) => {
-        setSavedMovies(data); 
-        setCurrentSavedMovies(data);               
-      })
-      .catch((err) => {        
-        console.log(err);
-      })
-      .finally(() => {                 
-      });
-  }
-
-  const filterMovies = (search, checkboxStatus, films) => {
+    const filterMovies = (search, checkboxStatus, films) => {
     setSearchValue(search);        
     setCurrentSavedMovies(films.filter((item) => {
       const name = item.nameRU +  item.nameEN;      
@@ -46,6 +24,10 @@ function SavedMovies({ isLoading, serverError }) {
     }))
   };
 
+  function getMovies() {
+    filterMovies(searchValue, false, savedMovies);
+  }
+
   function getShortMovies() {
     if(checkboxChecked) {
       setCheckboxChecked(false);
@@ -53,20 +35,15 @@ function SavedMovies({ isLoading, serverError }) {
     } else {  
       setCheckboxChecked(true);    
       filterMovies(searchValue, true, savedMovies);
-    }   
-    console.log(checkboxChecked); 
-  }
-
-  
-  
- 
+    }    
+  } 
   
   return (
     <section className="movies">
-      <SearchForm searchValue={searchValue} setSearchValue={setSearchValue} checkboxChecked={checkboxChecked} setCheckboxChecked={setCheckboxChecked} getShortMovies={getShortMovies} />
+      <SearchForm getMovies={getMovies} searchValue={searchValue} setSearchValue={setSearchValue} checkboxChecked={checkboxChecked} setCheckboxChecked={setCheckboxChecked} getShortMovies={getShortMovies} />
       {
         currentSavedMovies.length ?
-          <MoviesCardList selector="card" items={currentSavedMovies} getShortMovies={getShortMovies} />
+          <MoviesCardList selector="card" items={currentSavedMovies} getShortMovies={getShortMovies} savedMovies={savedMovies} />
           :
           isLoading ?
             <Preloader />

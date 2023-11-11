@@ -4,11 +4,11 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import NoResult from "../NoResult/NoResult";
 import Preloader from '../Preloader/Preloader';
 
-function Movies({ width, getSearchMovies, currentMovies, isLoading, serverError, searchValue, setSearchValue, checkboxChecked, setCheckboxChecked, getShortMovies }) {   
+function Movies({ width, addToSavedMovies, savedMovies, apiMovies, getSearchMovies, currentMovies, isLoading, serverError, searchValue, setSearchValue, checkboxChecked, setCheckboxChecked, getShortMovies }) {   
   
   const [visibleItems, setVisibleItems] = useState();
   const [additionalCard, setAdditionalCard] = useState();
-  const [visibleButton, setVisibleButton] = useState(false);
+  const [visibleButton, setVisibleButton] = useState(false);  
   
   useEffect(() => {       
     if (width >= 1280) {
@@ -44,7 +44,7 @@ function Movies({ width, getSearchMovies, currentMovies, isLoading, serverError,
       {
         currentMovies.length ?
           <>
-            <MoviesCardList selector="card" visibleItems={visibleItems} additionalCard={additionalCard} items={currentMovies} isLoading={isLoading} searchValue={searchValue} />
+            <MoviesCardList selector="card" addToSavedMovies={addToSavedMovies} savedMovies={savedMovies} apiMovies={apiMovies} visibleItems={visibleItems} additionalCard={additionalCard} items={currentMovies} isLoading={isLoading} searchValue={searchValue} />
             <div className={`show-more ${!visibleButton && "show-more_hidden"}`}>
               <button className="show-more__button" type="buttuon" onClick={showMore}>Еще</button>
             </div>

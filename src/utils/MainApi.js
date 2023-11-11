@@ -78,6 +78,9 @@ class MainApi {
     return fetch(`${this._url}/movies`, {
       method: 'POST',
       credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
       body: JSON.stringify({country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN})    
     })
   }

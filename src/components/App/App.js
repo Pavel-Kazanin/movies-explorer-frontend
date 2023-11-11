@@ -29,6 +29,7 @@ function App() {
   const [serverError, setServerError] = useState(''); 
   const [currentUser, setCurrentUser] = useState({});
   const [movies, setMovies] = useState([]); 
+  const [savedMovies, setSavedMovies] = useState([]);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [currentMovies, setCurrentMovies] = useState([]);   
   const [searchValue, setSearchValue] = useState('');   
@@ -49,8 +50,9 @@ function App() {
   }, [])
 
   useEffect(() => {    
-    handleTokenCheck();     
-  },[loggedIn]);
+    handleTokenCheck();
+    getSavedMovies();     
+  },[loggedIn]);  
 
   const handleTokenCheck = () => {
     mainApi.checkToken()
@@ -183,11 +185,10 @@ function App() {
     if (movies.length === 0){
       moviesApi.getMovies()    
       .then((res) => {
-        if(res.ok) {
-          setServerError(false);          
+        if(res.ok) {                    
           return res.json();          
         } else {
-          setServerError('Jib,rf');
+          return res.json();          
         }
       })
       .then((data) => {
@@ -205,6 +206,40 @@ function App() {
       filterMovies(searchValue, checkboxChecked, movies);
       setIsLoading(false);
     }    
+  }
+
+  function getSavedMovies() {
+    mainApi.getSavedMovies()    
+      .then((res) => {
+        if(res.ok) {                    
+          return res.json();          
+        } else {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        setSavedMovies(data);                        
+      })
+      .catch((err) => {        
+        console.log(err);
+      })
+      .finally(() => {                 
+      });
+  }
+
+  function addToSavedMovies(movieCard) { 
+    const movieCardImage = `https://api.nomoreparties.co/${movieCard.image.url}`
+    const thumbnail = `https://api.nomoreparties.co/${movieCard.image.formats.thumbnail.url}`   
+    mainApi.setSavedMovies(movieCard.country, movieCard.director, movieCard.duration, movieCard.year, movieCard.description, movieCardImage, movieCard.trailerLink, thumbnail, movieCard.id, movieCard.nameRU, movieCard.nameEN, )
+    .then((res) => {
+      return res.json()      
+    })
+    .then((newCard) => {      
+      setSavedMovies([newCard, ...savedMovies]);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   function getShortMovies() {        
@@ -231,8 +266,8 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/signin" element={<Login serverError={serverError} onAuthSubmit={handleAuthSubmit} />} />
           <Route path="/signup" element={<Register serverError={serverError} onRegisterUser={handleRegistrationSubmit} />} />
-          <Route path="/movies" element={<ProtectedRoute element={Movies} getShortMovies={getShortMovies} checkboxChecked={checkboxChecked} setCheckboxChecked={setCheckboxChecked} serverError={serverError} searchValue={searchValue} setSearchValue={setSearchValue} isLoading={isLoading} tokenCheck={handleTokenCheck} loggedIn={loggedIn}  width={width} getSearchMovies={getMovies} currentMovies={currentMovies} />} />
-          <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} filterMovies={filterMovies} loggedIn={loggedIn}  width={width} />} />
+          <Route path="/movies" element={<ProtectedRoute element={Movies} addToSavedMovies={addToSavedMovies} apiMovies={movies} savedMovies={savedMovies} getShortMovies={getShortMovies} checkboxChecked={checkboxChecked} setCheckboxChecked={setCheckboxChecked} serverError={serverError} searchValue={searchValue} setSearchValue={setSearchValue} isLoading={isLoading} tokenCheck={handleTokenCheck} loggedIn={loggedIn}  width={width} getSearchMovies={getMovies} currentMovies={currentMovies} />} />
+          <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} filterMovies={filterMovies} loggedIn={loggedIn}  width={width} savedMovies={savedMovies} />} />
           <Route path="/profile" element={<ProtectedRoute element={Profile} isEdit={isEdit} setEditState={setEditState} loggedIn={loggedIn} onUpdateUser={handleUpdateUser} onSignOut={handleSignOut} serverError={serverError} />} />
         </Routes>
         {
