@@ -5,7 +5,7 @@ import Preloader from '../Preloader/Preloader';
 import NoResult from '../NoResult/NoResult';
 
 
-function SavedMovies({ isLoading, serverError, savedMovies }) {
+function SavedMovies({ isLoading, serverError, savedMovies, deleteSavedMovies }) {
   
   const [currentSavedMovies, setCurrentSavedMovies] = useState([]);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
@@ -43,7 +43,7 @@ function SavedMovies({ isLoading, serverError, savedMovies }) {
       <SearchForm getMovies={getMovies} searchValue={searchValue} setSearchValue={setSearchValue} checkboxChecked={checkboxChecked} setCheckboxChecked={setCheckboxChecked} getShortMovies={getShortMovies} />
       {
         currentSavedMovies.length ?
-          <MoviesCardList selector="card" items={currentSavedMovies} getShortMovies={getShortMovies} savedMovies={savedMovies} />
+          <MoviesCardList selector="card" items={currentSavedMovies} getShortMovies={getShortMovies} savedMovies={savedMovies} deleteSavedMovies={deleteSavedMovies} />
           :
           isLoading ?
             <Preloader />

@@ -17,7 +17,7 @@ function MoviesCardList({ visibleItems, items, selector, isLoading, savedMovies,
               link.pathname === '/movies' ?
                 items.slice(0, visibleItems).map((card) => <MoviesCard key={card.id} card={card} deleteSavedMovies={deleteSavedMovies} addToSavedMovies={addToSavedMovies} selector={selector} apiMovies={apiMovies} savedMovies={savedMovies} />)
                 :
-                items.map((card) => <MoviesCard selector="saved-card" key={card._id} card={card} savedMovies={savedMovies} />)
+                items.map((card) => <MoviesCard selector="saved-card" key={card._id} card={card} savedMovies={savedMovies} deleteSavedMovies={deleteSavedMovies} />)
             }
           </ul>
       }

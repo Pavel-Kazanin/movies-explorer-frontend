@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 function MoviesCard({card, selector, savedMovies, addToSavedMovies, deleteSavedMovies }) {
 
   const [isSaved, setSaved] = useState(false);
-  const link = useLocation();   
+  const link = useLocation();  
   
   useEffect(() => {
     savedMovies.forEach((item) => {
@@ -15,14 +15,18 @@ function MoviesCard({card, selector, savedMovies, addToSavedMovies, deleteSavedM
   }, [savedMovies]);
 
   function toggleLike() {
-    if (!isSaved) {
-      addToSavedMovies(card);
-      setSaved(true);
-    } else {      
-      deleteSavedMovies(savedMovies.find(item => item.movieId === card.id)._id);
+    if (link.pathname === "/movies") {
+      if (!isSaved) {      
+        addToSavedMovies(card);
+        setSaved(true);
+      } else {      
+        deleteSavedMovies(savedMovies.find(item => item.movieId === card.id)._id);
+        setSaved(false);
+      }
+    } else {
+      deleteSavedMovies(card._id);
       setSaved(false);
-    }
-
+    }    
   }
 
   function getTimeFromMins(mins) {
