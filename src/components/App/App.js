@@ -32,9 +32,8 @@ function App() {
   const [savedMovies, setSavedMovies] = useState([]);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [currentMovies, setCurrentMovies] = useState([]);   
-  const [searchValue, setSearchValue] = useState('');   
-
-  console.log(loggedIn);
+  const [searchValue, setSearchValue] = useState(''); 
+  
   useEffect(() => {
     if (width > 768) {
       closeBurger();
