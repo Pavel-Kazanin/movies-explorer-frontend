@@ -56,8 +56,7 @@ class MainApi {
     return fetch(`${this._url}/signout`, {
       method: 'GET',
       credentials: 'include'
-    })
-    .then(this._checkResponse) 
+    })     
   }
 
   checkToken() {
