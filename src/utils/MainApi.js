@@ -8,18 +8,9 @@ class MainApi {
   _checkResponse(res) {
     if (res.ok) {
       return res.json();
-    }
-
-    return Promise.reject(`Ошибка: ${res.status}`);
+    }      
+    return Promise.reject(res.json());
   }
-
-  getUserInfo() {
-    return fetch(`${this._url}/users/me`, {
-      headers: this._headers,
-      credentials: 'include'
-    })
-    .then(this._checkResponse)
-  } 
 
   setUserInfo(name, email) {
     return fetch(`${this._url}/users/me`, {
@@ -27,7 +18,8 @@ class MainApi {
       headers: this._headers,
       credentials: 'include',
       body: JSON.stringify({ name, email })
-    })    
+    })
+    .then(this._checkResponse)   
   }  
 
   registerUser(password, email, name) {
@@ -38,7 +30,8 @@ class MainApi {
       },
       credentials: 'include',
       body: JSON.stringify({password, email, name})
-    })     
+    })
+    .then(this._checkResponse)    
   }
 
   authorizeUser(password, email) {
@@ -49,21 +42,24 @@ class MainApi {
         'Content-Type': 'application/json'
       },      
       body: JSON.stringify({password, email})
-    })         
+    })
+    .then(this._checkResponse)      
   }
 
   signOut() {
     return fetch(`${this._url}/signout`, {
       method: 'GET',
       credentials: 'include'
-    })     
+    })
+    .then(this._checkResponse)     
   }
 
   checkToken() {
     return fetch(`${this._url}/users/me`, {
       method: 'GET',
       credentials: 'include'      
-    })         
+    })
+    .then(this._checkResponse)       
   }
 
   getSavedMovies() {
@@ -71,6 +67,7 @@ class MainApi {
       method: 'GET',
       credentials: 'include'     
     })
+    .then(this._checkResponse) 
   }
 
   deleteMovie(movieId) {
@@ -78,7 +75,8 @@ class MainApi {
       method: 'DELETE',
       headers: this._headers,
       credentials: 'include'
-    })    
+    })
+    .then(this._checkResponse)    
   }
 
   setSavedMovies(country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN) {
@@ -88,6 +86,7 @@ class MainApi {
       headers: this._headers, 
       body: JSON.stringify({country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN})    
     })
+    .then(this._checkResponse) 
   }
 }
 

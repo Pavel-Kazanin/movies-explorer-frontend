@@ -29,16 +29,24 @@ function App() {
   const [serverError, setServerError] = useState(''); 
   const [currentUser, setCurrentUser] = useState({});
   const [movies, setMovies] = useState([]); 
-  const [savedMovies, setSavedMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);  
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [currentMovies, setCurrentMovies] = useState([]);   
-  const [searchValue, setSearchValue] = useState(''); 
-  
+  const [searchValue, setSearchValue] = useState('');  
+
+  console.log(movies);
+
   useEffect(() => {
     if (width > 768) {
       closeBurger();
     }    
-  }, [width]);
+  }, [width, link]); 
+
+  useEffect(() => {
+    if (loggedIn && (link.pathname === "/signup" || link.pathname === "/signin")) {
+      navigate("/", { replace: true });
+    }
+  }, [link])
 
   useEffect(() => {
     if (localStorage.searchRequest && localStorage.checkboxState && localStorage.movies) { 
@@ -49,6 +57,10 @@ function App() {
     }   
   }, [])
 
+  useEffect(() => {
+    setServerError('');
+  }, [])
+
   useEffect(() => {    
     handleTokenCheck();
     getSavedMovies();     
@@ -56,64 +68,43 @@ function App() {
 
   const handleTokenCheck = () => {
     mainApi.checkToken()
-      .then((res) => {              
-        if (res.ok) {          
-          setLoggedIn(true);
-          navigate('/movies', { replace: true });
-          return res.json();
-        } else {
-          setLoggedIn(false);
-        }
-      })
       .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => {
-        console.log(err);
+          setLoggedIn(true);
+          navigate(link.pathname, { replace: true });          
+          setCurrentUser(data);
+      })      
+      .catch((err) => {        
+        err.then((body) => {
+          console.log(body.message);
+        })
       })
   }
 
   function handleRegistrationSubmit(password, email, name) {
     mainApi.registerUser(password, email, name)
-    .then((res) => {                            
-      if (res.ok) {
+      .then(() => {
         handleAuthSubmit(password, email);
-        setServerError('');                                
-        return res.json();
-      } else {
-        return res.json();                                   
-      }      
-    })
-    .then((res) => { 
-      setServerError(res.message);
-      return Promise.reject(`Ошибка: ${res.message}`); 
-    })
-    .catch((err) => {      
-      console.log(err);
-    })
+        setServerError('');
+      })
+      .catch((err) => {        
+        err.then((body) => {
+          setServerError(body.message);
+        })
+      })
   }
 
   function handleAuthSubmit(password, email) {
-    mainApi.authorizeUser(password, email)           
-      .then((res) => { 
-          if(res.ok) {
-            return res.json();
-          } else {
-            return res.json();
-          }       
-      })
+    mainApi.authorizeUser(password, email)
       .then((res) => {
-        if (res.data) {          
-          setCurrentUser(res.data);       
-          setLoggedIn(true);          
-          navigate('/movies', { replace: true });                 
-        } else {   
-          setServerError(res.message);       
-          return Promise.reject(`Ошибка: ${res.message}`);
-        }
-      })  
-      .catch((err) => {
-        console.error(err);
+        setCurrentUser(res.data);
+        setLoggedIn(true);
+        navigate('/movies', { replace: true });
+        setServerError('');
+      })
+      .catch((err) => {        
+        err.then((body) => {
+          setServerError(body.message);
+        })
       })
   } 
 
@@ -134,27 +125,23 @@ function App() {
   }
 
   function handleUpdateUser(info) {         
-    mainApi.setUserInfo(info.name, info.email)
-    .then((res) => { 
-      if(res.ok) {   
-        setServerError('Данные успешно обновлены');
-        setEditState(false);                   
-        return res.json();                  
-      } else {             
-        return res.json();
-      }                 
+    mainApi.setUserInfo(info.name, info.email)    
+    .then((data) => {        
+      setCurrentUser(data); 
+      setEditState(false);
+      setServerError("Данные успешно обновлены");
+      setTimeout(() => {
+        setServerError('')
+      }, 1000)    
     })
-    .then((data) => {
-      if (data.message) {          
-        setServerError(data.message);       
-        return Promise.reject(`Ошибка: ${data.message}`);               
-      } else {   
-        setCurrentUser(data);
-      }
-    })  
-    .catch((err) => {
-      console.log(err);
-    })   
+    .catch((err) => {            
+      err.then((body) => {        
+        setServerError(body.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      })      
+    })         
   }
 
   function openBurger() {
@@ -184,20 +171,13 @@ function App() {
   function getMovies() {
     setIsLoading(true);
     if (movies.length === 0){
-      moviesApi.getMovies()    
-      .then((res) => {
-        if(res.ok) {                    
-          return res.json();          
-        } else {
-          return res.json();          
-        }
-      })
+      moviesApi.getMovies()      
       .then((data) => {
         setMovies(data); 
         filterMovies(searchValue, checkboxChecked, data);        
       })
       .catch((err) => {
-        setServerError(true);
+        setServerError("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз");
         console.log(err);
       })
       .finally(() => {
@@ -210,47 +190,52 @@ function App() {
   }
 
   function getSavedMovies() {
-    mainApi.getSavedMovies()    
-      .then((res) => {
-        if(res.ok) {                    
-          return res.json();          
-        } else {
-          return res.json();
-        }
-      })
+    mainApi.getSavedMovies()      
       .then((data) => {
         setSavedMovies(data);                        
       })
-      .catch((err) => {        
-        console.log(err);
-      })
-      .finally(() => {                 
-      });
+      .catch((err) => {            
+        err.then((body) => {        
+          setServerError(body.message);
+        })
+        .catch((err) => {
+          console.log(err);
+        })      
+      })         
   }
 
-  function addToSavedMovies(movieCard) { 
+  function addToSavedMovies(movieCard, likeCard) { 
     const movieCardImage = `https://api.nomoreparties.co/${movieCard.image.url}`
     const thumbnail = `https://api.nomoreparties.co/${movieCard.image.formats.thumbnail.url}`   
     mainApi.setSavedMovies(movieCard.country, movieCard.director, movieCard.duration, movieCard.year, movieCard.description, movieCardImage, movieCard.trailerLink, thumbnail, movieCard.id, movieCard.nameRU, movieCard.nameEN, )
-    .then((res) => {
-      return res.json()      
+    .then((newCard) => {  
+      likeCard();        
+      setSavedMovies([newCard, ...savedMovies]);      
     })
-    .then((newCard) => {      
-      setSavedMovies([newCard, ...savedMovies]);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => {            
+      err.then((body) => {        
+        setServerError(body.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      })      
+    }) 
   }
 
-  function deleteSavedMovies(movieCard) {
+  function deleteSavedMovies(movieCard, deleteLike) {
     mainApi.deleteMovie(movieCard).then(() => {
       const newCards = savedMovies.filter(item => item._id !== movieCard);
-      setSavedMovies(newCards);    
+      deleteLike();
+      setSavedMovies(newCards);
     })
-    .catch((err) => {
-      console.log(err);
-    })   
+      .catch((err) => {
+        err.then((body) => {
+          setServerError(body.message);
+        })
+          .catch((err) => {
+            console.log(err);
+          })
+      })
   }
 
   function getShortMovies() {        
@@ -261,9 +246,7 @@ function App() {
       setCheckboxChecked(true);    
       filterMovies(searchValue, true, movies);
     }
-  }  
-
-
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

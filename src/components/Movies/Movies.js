@@ -14,12 +14,12 @@ function Movies({ width, addToSavedMovies, deleteSavedMovies, savedMovies, apiMo
     if (width >= 1280) {
       setVisibleItems(16);
       setAdditionalCard(4);
-    } else if (width < 1280 && width > 768) {
-      setVisibleItems(8);
-      setAdditionalCard(4);
-    } else if (width > 480 && width <= 768) {
-      setVisibleItems(8);
-      setAdditionalCard(4);
+    } else if (width < 1280 && width > 990) {
+      setVisibleItems(12);
+      setAdditionalCard(3);
+    } else if (width >= 630 && width <= 989) {
+      setVisibleItems(4);
+      setAdditionalCard(1);
     } else if (width <= 480 && width>= 320) {
       setVisibleItems(5);
       setAdditionalCard(1);

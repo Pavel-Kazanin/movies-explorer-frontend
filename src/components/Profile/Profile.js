@@ -28,7 +28,7 @@ function Profile({ onUpdateUser, loggedIn, onSignOut, serverError, isEdit, setEd
 
   function allowEdit() {    
     setEditState(true);
-    setValues(currentUser);    
+    setValues(currentUser);       
   }
   
   function handleSubmit(e) {   

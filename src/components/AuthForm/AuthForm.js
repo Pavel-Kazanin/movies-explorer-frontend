@@ -1,4 +1,4 @@
-function AuthForm(props) {  
+function AuthForm(props) {
 
   return (
     <form className={`form form-auth form-${props.page}`} onSubmit={props.onSubmit} name="authorization" noValidate>

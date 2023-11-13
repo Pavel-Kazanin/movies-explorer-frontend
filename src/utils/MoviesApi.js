@@ -9,7 +9,6 @@ class MoviesApi {
     if (res.ok) {
       return res.json();
     }
-
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
@@ -19,7 +18,8 @@ class MoviesApi {
       headers: {
         'Content-Type': 'application/json'
       },
-    })   
+    })
+    .then(this._checkResponse)   
   }   
 }
 

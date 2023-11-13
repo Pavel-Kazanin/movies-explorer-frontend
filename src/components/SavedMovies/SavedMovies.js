@@ -12,7 +12,8 @@ function SavedMovies({ isLoading, serverError, savedMovies, deleteSavedMovies })
   const [searchValue, setSearchValue] = useState('');  
 
   useEffect(() => {
-    setCurrentSavedMovies(savedMovies);    
+    filterMovies(searchValue, checkboxChecked, savedMovies);
+    //setCurrentSavedMovies(savedMovies);    
   }, [savedMovies]);  
 
     const filterMovies = (search, checkboxStatus, films) => {
