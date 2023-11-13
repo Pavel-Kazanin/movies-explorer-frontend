@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
+import { API_IMAGE_LINK } from "../../utils/constants";
 
 function MoviesCard({card, selector, savedMovies, addToSavedMovies, deleteSavedMovies }) {
 
@@ -45,9 +46,8 @@ function MoviesCard({card, selector, savedMovies, addToSavedMovies, deleteSavedM
 };
 
   return (
-
     <li className={`movies__card card ${selector}`}>
-      <a className="card__trailer-link" href={card.trailerLink} target="_blank" rel="noreferrer"><img className="card__image" alt={card.nameRU} src={link.pathname === "/movies" ? `https://api.nomoreparties.co/${card.image.url}` : card.image} /></a>
+      <a className="card__trailer-link" href={card.trailerLink} target="_blank" rel="noreferrer"><img className="card__image" alt={card.nameRU} src={link.pathname === "/movies" ? API_IMAGE_LINK + card.image.url : card.image} /></a>
       <div className="card__description">
         <h2 className="card__title">{card.nameRU}</h2>
         <button className={`${selector}__like ${isSaved && 'card__like_active'}`} name="card-like" type="button" value="add-like" onClick={toggleLike}></button>
@@ -55,7 +55,6 @@ function MoviesCard({card, selector, savedMovies, addToSavedMovies, deleteSavedM
       <div className="card__separator"></div>
       <p className="card__duration">{getTimeFromMins(card.duration)}</p>
     </li>
-
   )
 }
 

@@ -1,3 +1,5 @@
+import { NO_KEYWORD } from "../../utils/constants";
+
 function SearchForm({ getMovies, searchValue, setSearchValue, checkboxChecked, getShortMovies }) { 
 
   function handleChange(e) {
@@ -6,7 +8,7 @@ function SearchForm({ getMovies, searchValue, setSearchValue, checkboxChecked, g
   } 
 
   function handleFocus() {
-    if (searchValue === "Нужно ввести ключевое слово") {
+    if (searchValue === NO_KEYWORD) {
       setSearchValue('');
     }
   }
@@ -18,7 +20,7 @@ function SearchForm({ getMovies, searchValue, setSearchValue, checkboxChecked, g
   function handleSubmit(e) {
     e.preventDefault();
     if (searchValue === '') {
-      setSearchValue('Нужно ввести ключевое слово');
+      setSearchValue(NO_KEYWORD);
     } else {      
       getMovies();
     }    

@@ -3,7 +3,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import NoResult from '../NoResult/NoResult';
-
+import { BASE_SERVER_ERROR, NO_RESULT } from '../../utils/constants';
 
 function SavedMovies({ isLoading, serverError, savedMovies, deleteSavedMovies }) {
   
@@ -12,8 +12,7 @@ function SavedMovies({ isLoading, serverError, savedMovies, deleteSavedMovies })
   const [searchValue, setSearchValue] = useState('');  
 
   useEffect(() => {
-    filterMovies(searchValue, checkboxChecked, savedMovies);
-    //setCurrentSavedMovies(savedMovies);    
+    filterMovies(searchValue, checkboxChecked, savedMovies);        
   }, [savedMovies]);  
 
     const filterMovies = (search, checkboxStatus, films) => {
@@ -49,7 +48,7 @@ function SavedMovies({ isLoading, serverError, savedMovies, deleteSavedMovies })
           isLoading ?
             <Preloader />
             :
-            <NoResult serverError={serverError ? "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз" : "Ничего не найдено"} />
+            <NoResult serverError={serverError ? BASE_SERVER_ERROR : NO_RESULT} />
       }
     </section>
   )

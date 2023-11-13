@@ -8,7 +8,7 @@ function AuthForm(props) {
       {props.loggedIn && !props.isEdit ?
         <button className={`${props.page}__submit-button`} onClick={props.allowEdit} type="button">Редактировать</button>
         :
-        <input className={`form-auth__submit-button ${!props.isValid && 'form-auth__submit-button_disable'}`} type="submit" value={props.buttonText} disabled={!props.isValid} />
+        <input className={`form-auth__submit-button ${(!props.isValid || props.isBlockedForm) && 'form-auth__submit-button_disable'}`} type="submit" value={props.buttonText} disabled={!props.isValid || props.isBlockedForm} />
       }      
     </form>
   )

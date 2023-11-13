@@ -3,6 +3,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import NoResult from "../NoResult/NoResult";
 import Preloader from '../Preloader/Preloader';
+import { MAX_WIDTH, INTERMEDIATE_MAX_WIDTH, INTERMEDIATE_MD_WIDTH, INTERMEDIATE_MIN_WIDTH, MIN_WIDTH, MAX_VB_ITEMS, MD_VB_ITEMS, MDMIN_VB_ITEMS, MIN_VB_ITEMS, MAX_ADD_CARD, MD_ADD_CARD, MIN_ADD_CARD } from '../../utils/constants';
 
 function Movies({ width, addToSavedMovies, deleteSavedMovies, savedMovies, apiMovies, getSearchMovies, currentMovies, isLoading, serverError, searchValue, setSearchValue, checkboxChecked, setCheckboxChecked, getShortMovies }) {   
   
@@ -11,18 +12,18 @@ function Movies({ width, addToSavedMovies, deleteSavedMovies, savedMovies, apiMo
   const [visibleButton, setVisibleButton] = useState(false);  
   
   useEffect(() => {       
-    if (width >= 1280) {
-      setVisibleItems(16);
-      setAdditionalCard(4);
-    } else if (width < 1280 && width > 990) {
-      setVisibleItems(12);
-      setAdditionalCard(3);
-    } else if (width >= 630 && width <= 989) {
-      setVisibleItems(4);
-      setAdditionalCard(1);
-    } else if (width <= 480 && width>= 320) {
-      setVisibleItems(5);
-      setAdditionalCard(1);
+    if (width >= MAX_WIDTH) {
+      setVisibleItems(MAX_VB_ITEMS);
+      setAdditionalCard(MAX_ADD_CARD);
+    } else if (width < MAX_WIDTH && width > INTERMEDIATE_MAX_WIDTH) {
+      setVisibleItems(MD_VB_ITEMS);
+      setAdditionalCard(MD_ADD_CARD);
+    } else if (width >= INTERMEDIATE_MD_WIDTH && width <= INTERMEDIATE_MAX_WIDTH) {
+      setVisibleItems(MDMIN_VB_ITEMS);
+      setAdditionalCard(MIN_ADD_CARD);
+    } else if (width <= INTERMEDIATE_MIN_WIDTH && width>= MIN_WIDTH) {
+      setVisibleItems(MIN_VB_ITEMS);
+      setAdditionalCard(MIN_ADD_CARD);
     }    
   }, [width, additionalCard])    
 
@@ -53,7 +54,7 @@ function Movies({ width, addToSavedMovies, deleteSavedMovies, savedMovies, apiMo
           isLoading ?
           <Preloader />
           :
-          <NoResult serverError={serverError ? "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз" : "Ничего не найдено"} />
+          <NoResult serverError={serverError} />
       }
     </section>
   )
