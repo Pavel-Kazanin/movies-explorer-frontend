@@ -1,221 +1,62 @@
 import { useState, useEffect } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import cardLink from "../../images/movies/33 слова о дизайне.jpg";
+import NoResult from "../NoResult/NoResult";
+import Preloader from '../Preloader/Preloader';
+import { MAX_WIDTH, INTERMEDIATE_MAX_WIDTH, INTERMEDIATE_MD_WIDTH, INTERMEDIATE_MIN_WIDTH, MIN_WIDTH, MAX_VB_ITEMS, MD_VB_ITEMS, MDMIN_VB_ITEMS, MIN_VB_ITEMS, MAX_ADD_CARD, MD_ADD_CARD, MIN_ADD_CARD } from '../../utils/constants';
 
-function Movies({width}) {
-
-  const initialCards = [
-    {
-      name: '33 слова о дизайне',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: true,
-      id: 1
-    },
-    {
-      name: 'Киноальманах «100 лет дизайна»',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: true,
-      id: 2
-    },
-    {
-      name: 'В погоне за Бенкси',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 3
-    },
-    {
-      name: 'Баския: Взрыв реальности',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 4
-    },
-    {
-      name: 'Бег это свобода',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: true,
-      id: 5
-    },
-    {
-      name: 'Книготорговцы',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 6
-    },
-    {
-      name: 'Когда я думаю о Германии ночью',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 7
-    },
-    {
-      name: 'Gimme Danger: История Игги и The Stooges',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 8
-    },
-    {
-      name: 'Дженис: Маленькая девочка грустит',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 9
-    },
-    {
-      name: 'Соберись перед прыжком',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 10
-    },
-    {
-      name: 'Пи Джей Харви: A dog called money',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 11
-    },
-    {
-      name: 'По волнам: Искусство звука в кино',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 12
-    },
-    {
-      name: 'Рудбой',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 13
-    },
-    {
-      name: 'Скейт — кухня',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 14
-    },
-    {
-      name: 'Война искусств',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 15
-    },
-    {
-      name: 'Зона',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 16
-    },
-    {
-      name: 'Война искусств',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 17
-    },
-    {
-      name: 'Война искусств',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 18
-    },
-    {
-      name: 'Война искусств',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 19
-    },
-    {
-      name: 'Война искусств',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 20
-    },
-    {
-      name: 'Война искусств',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 21
-    },
-    {
-      name: 'Война искусств',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 22
-    },
-    {
-      name: 'Война искусств',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 23
-    },
-    {
-      name: 'Война искусств',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 24
-    },
-    {
-      name: 'Война искусств',
-      link: cardLink,
-      duration: '1ч 42м',
-      saved: false,
-      id: 25
-    }
-  ];
-
-  const [items, setItems] = useState([]);
+function Movies({ width, addToSavedMovies, deleteSavedMovies, savedMovies, apiMovies, getSearchMovies, currentMovies, isLoading, serverError, searchValue, setSearchValue, checkboxChecked, setCheckboxChecked, getShortMovies }) {   
+  
   const [visibleItems, setVisibleItems] = useState();
-  const [visibleButton, setVisibleButton] = useState(true);
-
+  const [additionalCard, setAdditionalCard] = useState();
+  const [visibleButton, setVisibleButton] = useState(false);  
+  
   useEffect(() => {       
-    if (width >= 1280) {
-      setVisibleItems(16);
-    } else if (width < 1280 && width >= 768) {
-      setVisibleItems(8);
-    } else if (width < 768) {
-      setVisibleItems(5);
-    }
-  }, [width])
+    if (width >= MAX_WIDTH) {
+      setVisibleItems(MAX_VB_ITEMS);
+      setAdditionalCard(MAX_ADD_CARD);
+    } else if (width < MAX_WIDTH && width > INTERMEDIATE_MAX_WIDTH) {
+      setVisibleItems(MD_VB_ITEMS);
+      setAdditionalCard(MD_ADD_CARD);
+    } else if (width >= INTERMEDIATE_MD_WIDTH && width <= INTERMEDIATE_MAX_WIDTH) {
+      setVisibleItems(MDMIN_VB_ITEMS);
+      setAdditionalCard(MIN_ADD_CARD);
+    } else if (width <= INTERMEDIATE_MIN_WIDTH && width>= MIN_WIDTH) {
+      setVisibleItems(MIN_VB_ITEMS);
+      setAdditionalCard(MIN_ADD_CARD);
+    }    
+  }, [width, additionalCard])    
 
-  useEffect(() => {
-    setItems(initialCards);      
-    if (items.length > 0 && items.length <= visibleItems) {
+  useEffect(() => {    
+    if (currentMovies.length > 0 && currentMovies.length <= visibleItems) {
       setVisibleButton(false);
-    };  
-  }, [visibleItems]);
+    } else {
+      setVisibleButton(true);
+    }  
+  }, [currentMovies, visibleItems]);
 
   function showMore() {
-    setVisibleItems((previousValue) => previousValue + 4);                 
-  }  
-  
+    setVisibleItems((previousValue) => previousValue + additionalCard);                 
+  }    
+
   return (
     <section className="movies">
-      <SearchForm />
-      <MoviesCardList selector="card" visibleItems={visibleItems} items={items} />
-      <div className={`show-more ${!visibleButton && "show-more_hidden"}`}>
-        <button className="show-more__button" type="buttuon" onClick={showMore}>Еще</button>
-      </div>      
-    </section>  
+      <SearchForm getMovies={getSearchMovies} getShortMovies={getShortMovies} searchValue={searchValue} setSearchValue={setSearchValue} checkboxChecked={checkboxChecked} setCheckboxChecked={setCheckboxChecked} />
+      {
+        currentMovies.length ?
+          <>
+            <MoviesCardList selector="card" deleteSavedMovies={deleteSavedMovies} addToSavedMovies={addToSavedMovies} savedMovies={savedMovies} apiMovies={apiMovies} visibleItems={visibleItems} additionalCard={additionalCard} items={currentMovies} isLoading={isLoading} searchValue={searchValue} />
+            <div className={`show-more ${!visibleButton && "show-more_hidden"}`}>
+              <button className="show-more__button" type="buttuon" onClick={showMore}>Еще</button>
+            </div>
+          </>
+          :
+          isLoading ?
+          <Preloader />
+          :
+          <NoResult serverError={serverError} />
+      }
+    </section>
   )
 }
 
