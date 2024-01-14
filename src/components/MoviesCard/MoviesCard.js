@@ -1,31 +1,59 @@
 import { useState, useEffect } from "react";
-import cardLink from "../../images/movies/33 слова о дизайне.jpg";
+import { useLocation } from 'react-router-dom';
+import { API_IMAGE_LINK } from "../../utils/constants";
 
-function MoviesCard({card, selector}) {
+function MoviesCard({card, selector, savedMovies, addToSavedMovies, deleteSavedMovies }) {
 
   const [isSaved, setSaved] = useState(false);
+  const link = useLocation();
+  
+  function likeCard() {
+    setSaved(true);
+  }
 
+  function deleteLike() {
+    setSaved(false);
+  }
+  
   useEffect(() => {
-    if (card.saved) {
-      setSaved(true);
-    } else {
-      setSaved(false);
-    }
-  }, [])
+    savedMovies.forEach((item) => {      
+      if(item.movieId === card.id) {
+        setSaved(true);
+      }      
+    })    
+  }, [savedMovies]);
 
   function toggleLike() {
-    setSaved(!isSaved);
+    if (link.pathname === "/movies") {
+      if (!isSaved) {      
+        addToSavedMovies(card, likeCard);        
+      } else {      
+        deleteSavedMovies(savedMovies.find(item => item.movieId === card.id)._id, deleteLike);        
+      }
+    } else {
+      deleteSavedMovies(card._id, deleteLike);      
+    }    
   }
+
+  function getTimeFromMins(mins) {
+    let hours = Math.trunc(mins/60);
+    let minutes = mins % 60;
+    if(minutes === 0) {
+      return hours + 'ч'
+    } else {
+      return hours + 'ч:' + minutes + 'м';
+    }    
+};
 
   return (
     <li className={`movies__card card ${selector}`}>
-      <img className="card__image" alt="33 слова о дизайне" src={cardLink} />
+      <a className="card__trailer-link" href={card.trailerLink} target="_blank" rel="noreferrer"><img className="card__image" alt={card.nameRU} src={link.pathname === "/movies" ? API_IMAGE_LINK + card.image.url : card.image} /></a>
       <div className="card__description">
-        <h2 className="card__title">{card.name}</h2>
+        <h2 className="card__title">{card.nameRU}</h2>
         <button className={`${selector}__like ${isSaved && 'card__like_active'}`} name="card-like" type="button" value="add-like" onClick={toggleLike}></button>
       </div>
       <div className="card__separator"></div>
-      <p className="card__duration">{card.duration}</p>
+      <p className="card__duration">{getTimeFromMins(card.duration)}</p>
     </li>
   )
 }

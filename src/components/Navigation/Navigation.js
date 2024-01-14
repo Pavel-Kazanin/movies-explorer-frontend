@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 
 function Navigation({ isBurgerOpen, closeBurger }) {
+  
   const link = useLocation();
   
   return (    
