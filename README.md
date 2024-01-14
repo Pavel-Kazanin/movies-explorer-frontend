@@ -36,4 +36,4 @@
 **Ссылки** 
 
 * ссылка на ["pull request"](https://github.com/Pavel-Kazanin/movies-explorer-frontend/pull/2)
-* ссылка на задеплоенный на сервере проект ["Movies"](https://pavelkazaninmovies.nomoredomainsmonster.ru/)
+* ссылка на задеплоенный на сервере проект ["Movies"](https://pavelkazaninmovies.nomoredomainsmonster.ru/) (сейчас не активна)
